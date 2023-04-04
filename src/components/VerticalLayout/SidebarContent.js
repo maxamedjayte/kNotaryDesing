@@ -130,7 +130,7 @@ const SidebarContent = props => {
                 <li>
                   <Link to="/xogta-diiwaangalinta-macaamiisha">{props.t("Diiwaangalinta Macaamiisha")}</Link>
                 </li>
-                
+               
               </ul>
             </li>
             {/* <li>

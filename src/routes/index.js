@@ -15,6 +15,7 @@ import Dashboard from "../pages/Dashboard/index"
 import XogtaBoosaska from "pages/Boosaska/XogtaBoosaska"
 import XogtaDiiwaangalintaMacamiisha from "pages/Clients/XogtaDiiwaangalintaMacamiisha"
 import DiiwaangalintaBoosaskaCopy from "pages/Boosaska/DiiwaangalintaBoosaska"
+import XogtaMacaamiilka from "pages/Clients/XogtaMacaamiilka"
 
 const authProtectedRoutes = [
   { path: "/dashboard", component: Dashboard },
@@ -24,6 +25,7 @@ const authProtectedRoutes = [
   { path: "/diiwaangalinta-boosaska", component: DiiwaangalintaBoosaskaCopy },
   { path: "/xogta-boosaska", component: XogtaBoosaska },
   { path: "/xogta-diiwaangalinta-macaamiisha", component: XogtaDiiwaangalintaMacamiisha },
+  { path: "/xogta-macaamiilka/:id", component: XogtaMacaamiilka },
 
   // this route should be at the end of all other routes
   // eslint-disable-next-line react/display-name

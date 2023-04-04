@@ -13,15 +13,7 @@ import {
   deleteOrder as onDeleteOrder,
 } from "store/actions";
 
-import {
-  OrderId,
-  BillingName,
-  Date,
-  Total,
-  PaymentStatus,
-  PaymentMethod
-}
-  from "./EcommerceOrderCol";
+
 
 //redux
 import { useSelector, useDispatch } from "react-redux";
@@ -59,6 +51,34 @@ function XogtaDiiwaangalintaMacamiisha() {
 
   const [orderList, setOrderList] = useState([]);
   const [order, setOrder] = useState(null);
+  const FullName = (cell) => {
+    return (
+    <Link to="#" >
+    <div className="d-flex">
+
+        <div className="align-self-center me-3">
+            <img
+                src={`http://127.0.0.1:8000${cell.row.original.image}`}
+                className="rounded-circle avatar-xs"
+                alt=""
+            />
+        </div>
+
+        <div className="flex-grow-1 overflow-hidden">
+            <h5 className="text-truncate font-size-14 mb-1">
+                {cell.value}
+            </h5>
+            <p className="text-truncate mb-0">
+                {cell.row.original.number}
+            </p>
+        </div>
+        {/* <div className="font-size-11">
+            "{chat.time}"
+        </div> */}
+    </div>
+    </Link>
+    );
+};
 
   // validation
   const validation = useFormik({
@@ -182,15 +202,10 @@ function XogtaDiiwaangalintaMacamiisha() {
       {
         Header: 'ID',
         accessor: 'id',
-        width: '150px',
-        style: {
-          textAlign: "center",
-          width: "10%",
-          background: "#0000",
-        },
-        filterable: true,
+        width:"10px",
+        disableFilters:true,
         Cell: (cellProps) => {
-          return <OrderId {...cellProps} />;
+          return <strong> {cellProps.value ? cellProps.value : ''}</strong>;
         }
       },
       {
@@ -198,7 +213,7 @@ function XogtaDiiwaangalintaMacamiisha() {
         accessor: 'name',
         filterable: true,
         Cell: (cellProps) => {
-          return <BillingName {...cellProps} />;
+          return <FullName {...cellProps}   />
         }
       },
       {
@@ -206,7 +221,7 @@ function XogtaDiiwaangalintaMacamiisha() {
         accessor: 'dateOfBirth',
         filterable: true,
         Cell: (cellProps) => {
-          return <Date {...cellProps} />;
+          return cellProps.value ? cellProps.value : '';
         }
       },
       {
@@ -214,7 +229,7 @@ function XogtaDiiwaangalintaMacamiisha() {
         accessor: 'balance',
         filterable: true,
         Cell: (cellProps) => {
-          return <Total {...cellProps} />;
+          return <strong> $ {cellProps.value ? cellProps.value : ''}</strong>
         }
       },
       {
@@ -222,32 +237,18 @@ function XogtaDiiwaangalintaMacamiisha() {
         accessor: 'dateTimeRegistred',
         filterable: true,
         Cell: (cellProps) => {
-          return <PaymentStatus {...cellProps} />;
+          return cellProps.value ? cellProps.value : '';
         }
       },
       {
         Header: 'Nuuca-Lacagta',
+        disableFilters:true,
         accessor: 'typeOfMoney',
         Cell: (cellProps) => {
-          return <PaymentMethod {...cellProps} />;
+          return cellProps.value ? cellProps.value : '';
         }
       },
-      {
-        Header: 'View Details',
-        accessor: 'view',
-        disableFilters: true,
-        Cell: () => {
-          return (
-            <Button
-              type="button"
-              color="primary"
-              className="btn-sm btn-rounded"
-              onClick={toggleViewModal}
-            >
-              View Details
-            </Button>);
-        }
-      },
+      
       {
         Header: 'Action',
         accessor: 'action',
@@ -255,6 +256,19 @@ function XogtaDiiwaangalintaMacamiisha() {
         Cell: (cellProps) => {
           return (
             <div className="d-flex gap-3">
+              <Link
+                to={`/xogta-macaamiilka/${cellProps.row.original.id}/`}
+                className="text-info"
+                onClick={() => {
+                  const orderData = cellProps.row.original;
+                  handleOrderClick(orderData);
+                }}
+              >
+                <i className="mdi mdi-eye font-size-18" id="edittooltip" />
+                <UncontrolledTooltip placement="top" target="edittooltip">
+                  View
+                </UncontrolledTooltip>
+              </Link>
               <Link
                 to="#"
                 className="text-success"
