@@ -12,14 +12,18 @@ import ForgetPwd from "../pages/Authentication/ForgetPassword"
 
 // Dashboard
 import Dashboard from "../pages/Dashboard/index"
-import DiiwaangalintaBoosaska from "pages/Boosaska/DiiwaangalintaBoosaska"
+import XogtaBoosaska from "pages/Boosaska/XogtaBoosaska"
+import XogtaDiiwaangalintaMacamiisha from "pages/Clients/XogtaDiiwaangalintaMacamiisha"
+import DiiwaangalintaBoosaskaCopy from "pages/Boosaska/DiiwaangalintaBoosaska"
 
 const authProtectedRoutes = [
   { path: "/dashboard", component: Dashboard },
 
   // //profile
   { path: "/profile", component: UserProfile },
-  { path: "/diiwaangalinta-boosaska", component: DiiwaangalintaBoosaska },
+  { path: "/diiwaangalinta-boosaska", component: DiiwaangalintaBoosaskaCopy },
+  { path: "/xogta-boosaska", component: XogtaBoosaska },
+  { path: "/xogta-diiwaangalinta-macaamiisha", component: XogtaDiiwaangalintaMacamiisha },
 
   // this route should be at the end of all other routes
   // eslint-disable-next-line react/display-name

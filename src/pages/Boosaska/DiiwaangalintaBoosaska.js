@@ -33,30 +33,21 @@ import Breadcrumb from "../../components/Common/Breadcrumb";
 import avatar from "../../assets/images/users/avatar-1.jpg";
 // actions
 import { editProfile, resetProfileFlag } from "../../store/actions";
+import { httpFetcher } from "pages/services/fetchingData";
+import useSWR from 'swr';
 
 const DiiwaangalintaBooska = () => {
-  const optionGroup = [
-    {
-      label: "Picnic",
-      options: [
-        { label: "Mustard", value: "Mustard" },
-        { label: "Ketchup", value: "Ketchup" },
-        { label: "Relish", value: "Relish" }
-      ]
-    },
-    {
-      label: "Camping",
-      options: [
-        { label: "Tent", value: "Tent" },
-        { label: "Flashlight", value: "Flashlight" },
-        { label: "Toilet Paper", value: "Toilet Paper" }
-      ]
-    }
-  ];
+  const [whereComes, setWhereComes] = useState([]);
+  const [witness, setWitness] = useState([]);
+  const { data: clientsUsers, error: clientsUsersError } = useSWR(`/api/client-list/`, httpFetcher);
+
+
   const validation = useFormik({
     // enableReinitialize : use this flag when initial values needs to be changed
     enableReinitialize: true,
-
+    onChange: (data) => {
+      console.log(data)
+    },
     initialValues: {
       nootaayoReff: '',
       magacaBooska: '',
@@ -64,7 +55,7 @@ const DiiwaangalintaBooska = () => {
       soone: '',
       whereComes: '',
       price: '',
-      witnesses: '',
+      witnesses: witness,
       dateTime: '',
       description: '',
     },
@@ -73,7 +64,7 @@ const DiiwaangalintaBooska = () => {
       magacaBooska: Yup.string().required("Soo gali magaca booska"),
       lootoNum: Yup.string().required("Soo gali looto Num"),
       soone: Yup.string().required("Soo gali Soonaha Booska"),
-      whereComes:  Yup.string().required("Dooro Laga iibiyaha").oneOf(["usa", "mexico"]).label("Dooro Laga iibiyaha"),
+      whereComes: Yup.string().required("Dooro Laga iibiyaha"),
       price: Yup.number().required("Soo Gali qiimaha"),
       witnesses: Yup.string().required("Dooro Yaa laga iib-shay"),
       description: Yup.string().required("Soo gali faahfaahin"),
@@ -87,7 +78,23 @@ const DiiwaangalintaBooska = () => {
 
   const regExp = /\b\d{5}\b/;
 
+  useEffect(() => {
+    const whereComesArry = []
+    const witnessesArry = []
 
+    
+    if(clientsUsers){
+      clientsUsers.map((user) => {
+       whereComesArry.push({ value: user.id, label: user.name });
+       witnessesArry.push({ value: user.id, label: user.name });
+    });
+    }
+
+    
+    setWhereComes(whereComesArry)
+    setWitness(witnessesArry)
+
+  }, [clientsUsers])
   function handleSubmit(e) {
     e.preventDefault();
 
@@ -97,13 +104,11 @@ const DiiwaangalintaBooska = () => {
 
 
   //meta title
-  document.title = "Profile | Skote - React Admin & Dashboard Template";
+  document.title = "Diiwaangalinta Boosaska | kNotary React Admin & Dashboard";
 
   const dispatch = useDispatch();
 
-  const [email, setemail] = useState("");
-  const [name, setname] = useState("");
-  const [idx, setidx] = useState(1);
+
 
   const { error, success } = useSelector(state => ({
     error: state.Profile.error,
@@ -246,7 +251,7 @@ const DiiwaangalintaBooska = () => {
                               }
                             />
                           </InputGroup>
-                          
+
                           {validation.touched.price && validation.errors.price ? (
                             <FormFeedback type="invalid">{validation.errors.price}</FormFeedback>
                           ) : null}
@@ -256,21 +261,19 @@ const DiiwaangalintaBooska = () => {
                         <FormGroup className="mb-3">
                           <Label htmlFor="validationCustom01">Yaa Laga IIBSHAY</Label>
                           <Select
-                            name="whereComes"
                             placeholder="Laga IIBSHAY"
                             type="text"
                             id="validationCustom01"
-
-                            options={optionGroup}
+                            options={whereComes}
                             classNamePrefix="select2-selection"
-                            onChange={validation.handleChange}
+                            onChange={value => validation.setFieldValue("whereComes", value.value)}
                             onBlur={validation.handleBlur}
                             value={validation.values.whereComes || ""}
                             invalid={
                               validation.touched.whereComes && validation.errors.whereComes ? true : false
                             }
                           />
-                          
+
                           {validation.touched.whereComes && validation.errors.whereComes ? (
                             <FormFeedback type="invalid">{validation.errors.whereComes}</FormFeedback>
                           ) : null}
@@ -279,14 +282,14 @@ const DiiwaangalintaBooska = () => {
                       <Col md="6">
                         <FormGroup className="mb-3">
                           <Label htmlFor="validationCustom02">Marqaatiyaal</Label>
-                          <Input
-                            name="witnesses"
+                          <Select
                             placeholder="Magaca Booska"
                             type="text"
                             className="form-control"
                             id="validationCustom02"
-                            onChange={validation.handleChange}
-                            onBlur={validation.handleBlur}
+                            options={witness}
+                            onChange={value => validation.setFieldValue("witnesses", value.value)}
+                            // onBlur={validation.handleBlur}
                             value={validation.values.witnesses || ""}
                             invalid={
                               validation.touched.witnesses && validation.errors.witnesses ? true : false
