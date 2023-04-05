@@ -33,15 +33,20 @@ import Breadcrumb from "../../components/Common/Breadcrumb";
 import avatar from "../../assets/images/users/avatar-1.jpg";
 // actions
 import { editProfile, resetProfileFlag } from "../../store/actions";
-import { httpFetcher } from "pages/services/fetchingData";
+import { createBoss, httpFetcher } from "pages/services/fetchingData";
 import useSWR from 'swr';
 
 const DiiwaangalintaBooska = () => {
   const [whereComes, setWhereComes] = useState([]);
+  const [whoHasses, setWhoHasses] = useState([]);
   const [witness, setWitness] = useState([]);
+  const [booskaFormData, setBooskaFormData] = useState({});
   const { data: clientsUsers, error: clientsUsersError } = useSWR(`/api/client-list/`, httpFetcher);
 
-
+  const handleChange = ({ target }) => {
+    const { name, value } = target;
+    setBooskaFormData((prev) => ({ ...prev, [name]: value }));
+  };
   const validation = useFormik({
     // enableReinitialize : use this flag when initial values needs to be changed
     enableReinitialize: true,
@@ -64,7 +69,7 @@ const DiiwaangalintaBooska = () => {
       magacaBooska: Yup.string().required("Soo gali magaca booska"),
       lootoNum: Yup.string().required("Soo gali looto Num"),
       soone: Yup.string().required("Soo gali Soonaha Booska"),
-      whereComes: Yup.object().shape({id: Yup.string().required("Dooro Laga iibiyaha"),}),
+      whereComes: Yup.object().shape({ id: Yup.string().required("Dooro Laga iibiyaha"), }),
       price: Yup.number().required("Soo Gali qiimaha"),
       witnesses: Yup.string().required("Dooro Yaa laga iib-shay"),
       description: Yup.string().required("Soo gali faahfaahin"),
@@ -81,22 +86,42 @@ const DiiwaangalintaBooska = () => {
   useEffect(() => {
     const whereComesArry = []
     const witnessesArry = []
+    const whoHassArry = []
 
-    
-    if(clientsUsers){
+
+    if (clientsUsers) {
       clientsUsers.map((user) => {
-       whereComesArry.push({ value: user.id, label: user.name });
-       witnessesArry.push({ value: user.id, label: user.name });
-    });
+        whereComesArry.push({ value: user.id, label: user.name });
+        witnessesArry.push({ value: user.id, label: user.name });
+        whoHassArry.push({ value: user.id, label: user.name });
+      });
     }
 
-    
+
     setWhereComes(whereComesArry)
     setWitness(witnessesArry)
+    setWhoHasses(whoHassArry)
 
   }, [clientsUsers])
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
+    const formData = new FormData(e.target);
+    try {
+      
+    let response= await createBoss(formData);
+    console.log(response);
+    if(response.status="error"){
+      // toastr.warning("lama diiwaangalin fadlan ku celi markale")
+      setBooskaFormData({})
+    }
+    } catch (error) {
+      console.log(error);
+      // toastr.success('lama diiwaangalin fadlan ku celi markale')
+      
+    }
+
+    // if(response.)
+    
 
   }
 
@@ -133,18 +158,31 @@ const DiiwaangalintaBooska = () => {
                 <CardBody>
                   <h4 className="card-title">Soo Gali Xogta Booska</h4>
                   <p className="card-title-desc">
-                    Provide valuable, actionable feedback to your users with
-                    HTML5 form validation–available in all our supported
-                    browsers.
+                    Provide valuable, actionable feedback to your users with.
                   </p>
-                  <Form className="needs-validation"
-                    onSubmit={(e) => {
-                      e.preventDefault();
-                      validation.handleSubmit();
-                      return false;
-                    }}
-                  >
+                  <Form className="needs-validation" onSubmit={handleSubmit}  >
                     <Row>
+                      <Col md={4}  >
+                      <Card>
+                        sd
+                      </Card>
+                      </Col>
+                      <Col md={8}  >
+                      <FormGroup className="mb-3">
+                          <Label htmlFor="validationCustom01">Dooro Sawirka</Label>
+                          <Input
+                            name="image"
+                            placeholder="Sawirka Booska"
+                            type="file"
+                            className="form-control"
+                            id="validationCustom01"
+                            onChange={handleChange}
+                            value={booskaFormData.image || ""}
+
+                          />
+
+                        </FormGroup>
+                      </Col>
                       <Col md="6">
                         <FormGroup className="mb-3">
                           <Label htmlFor="validationCustom01">Nootaayo Reff</Label>
@@ -154,16 +192,11 @@ const DiiwaangalintaBooska = () => {
                             type="text"
                             className="form-control"
                             id="validationCustom01"
-                            onChange={validation.handleChange}
-                            onBlur={validation.handleBlur}
-                            value={validation.values.nootaayoReff || ""}
-                            invalid={
-                              validation.touched.nootaayoReff && validation.errors.nootaayoReff ? true : false
-                            }
+                            onChange={handleChange}
+                            value={booskaFormData.nootaayoReff || ""}
+
                           />
-                          {validation.touched.nootaayoReff && validation.errors.nootaayoReff ? (
-                            <FormFeedback type="invalid">{validation.errors.firstname}</FormFeedback>
-                          ) : null}
+
                         </FormGroup>
                       </Col>
                       <Col md="6">
@@ -175,16 +208,11 @@ const DiiwaangalintaBooska = () => {
                             type="text"
                             className="form-control"
                             id="validationCustom02"
-                            onChange={validation.handleChange}
-                            onBlur={validation.handleBlur}
-                            value={validation.values.magacaBooska || ""}
-                            invalid={
-                              validation.touched.magacaBooska && validation.errors.magacaBooska ? true : false
-                            }
+                            onChange={handleChange}
+                            value={booskaFormData.magacaBooska || ""}
+
                           />
-                          {validation.touched.magacaBooska && validation.errors.magacaBooska ? (
-                            <FormFeedback type="invalid">{validation.errors.magacaBooska}</FormFeedback>
-                          ) : null}
+
                         </FormGroup>
                       </Col>
                     </Row>
@@ -201,13 +229,9 @@ const DiiwaangalintaBooska = () => {
                             onChange={validation.handleChange}
                             onBlur={validation.handleBlur}
                             value={validation.values.lootoNum || ""}
-                            invalid={
-                              validation.touched.lootoNum && validation.errors.lootoNum ? true : false
-                            }
+
                           />
-                          {validation.touched.lootoNum && validation.errors.lootoNum ? (
-                            <FormFeedback type="invalid">{validation.errors.lootoNum}</FormFeedback>
-                          ) : null}
+
                         </FormGroup>
                       </Col>
                       <Col md="4">
@@ -219,16 +243,11 @@ const DiiwaangalintaBooska = () => {
                             type="text"
                             className="form-control"
                             id="validationCustom04"
-                            onChange={validation.handleChange}
-                            onBlur={validation.handleBlur}
-                            value={validation.values.soone || ""}
-                            invalid={
-                              validation.touched.soone && validation.errors.soone ? true : false
-                            }
+                            onChange={handleChange}
+                            value={booskaFormData.soone || ""}
+
                           />
-                          {validation.touched.soone && validation.errors.soone ? (
-                            <FormFeedback type="invalid">{validation.errors.soone}</FormFeedback>
-                          ) : null}
+
                         </FormGroup>
                       </Col>
 
@@ -243,82 +262,99 @@ const DiiwaangalintaBooska = () => {
                               name="price"
                               placeholder="Qiimaha Booska"
                               type="number"
-                              onChange={validation.handleChange}
-                              onBlur={validation.handleBlur}
-                              value={validation.values.price || ""}
-                              invalid={
-                                validation.touched.price && validation.errors.price ? true : false
-                              }
+                              onChange={handleChange}
+                              value={booskaFormData.price || ""}
+
                             />
                           </InputGroup>
 
-                          {validation.touched.price && validation.errors.price ? (
-                            <FormFeedback type="invalid">{validation.errors.price}</FormFeedback>
-                          ) : null}
+
                         </FormGroup>
                       </Col>
                       <Col md="6">
-                        <FormGroup className="mb-3">
+                        <FormGroup className="mb-2">
                           <Label htmlFor="validationCustom01">Yaa Laga IIBSHAY</Label>
+                          <Select
+                            placeholder="Laga IIBSHAY"
+                            type="text"
+                            name="whoHas"
+                            id="validationCustom01"
+                            options={whoHasses}
+                            classNamePrefix="select2-selection"
+                            onChange={value => setBooskaFormData((prev) => ({ ...prev, ["whoHas"]: value.value }))}
+                            value={whoHasses?.find(vl => { return booskaFormData.whoHas == vl.value })}
+                            required
+                          />
+
+                        </FormGroup>
+                      </Col>
+                      <Col md="6">
+                        <FormGroup className="mb-2">
+                          <Label htmlFor="validationCustom02">Marqaatiyaal</Label>
+                          <Select
+                            placeholder="Door Marqaatiyaasha"
+                            type="text"
+                            className="form-control"
+                            id="validationCustom02"
+                            options={witness}
+                            isMulti
+                            required
+                            onChange={value => setBooskaFormData((prev) => ({ ...prev, ["witnesses"]: value.value }))}
+                            // onBlur={validation.handleBlur}
+                            value={witness?.find(vl =>  booskaFormData.witnesses == vl.value )}
+
+                          />
+
+                        </FormGroup>
+                      </Col>
+                      <Col md="12">
+                        <FormGroup className="mb-3">
+                          <Label htmlFor="validationCustom01">Yaa iska-leh</Label>
                           <Select
                             placeholder="Laga IIBSHAY"
                             type="text"
                             id="validationCustom01"
                             options={whereComes}
                             classNamePrefix="select2-selection"
-                            onChange={value => validation.setFieldValue("whereComes", value.value)}
-                            onBlur={validation.handleBlur}
-                            value={ whereComes.find(vl=>{ return validation.values.whereComes==vl.value })}
-                            invalid={
-                              validation.touched.whereComes && validation.errors.whereComes ? true : false
-                            }
+                            onChange={value => setBooskaFormData((prev) => ({ ...prev, ["whereComes"]: value.value }))}
+                            value={whereComes?.find(vl => { return booskaFormData.whereComes == vl.value })}
+                            required
                           />
 
-                          {validation.touched.whereComes && validation.errors.whereComes ? (
-                            <FormFeedback type="invalid">{validation.errors.whereComes}</FormFeedback>
-                          ) : null}
                         </FormGroup>
                       </Col>
-                      <Col md="6">
+                      <Col md="4">
+
                         <FormGroup className="mb-3">
-                          <Label htmlFor="validationCustom02">Marqaatiyaal</Label>
-                          <Select
-                            placeholder="Magaca Booska"
-                            type="text"
-                            className="form-control"
-                            id="validationCustom02"
-                            options={witness}
-                            onChange={value => validation.setFieldValue("witnesses", value.value)}
-                            // onBlur={validation.handleBlur}
-                            value={validation.values.witnesses || ""}
-                            invalid={
-                              validation.touched.witnesses && validation.errors.witnesses ? true : false
-                            }
+                          <Label htmlFor="validationCustom05">Waqtiga La'iibiyay</Label>
+                          <Input
+                            type="datetime-local"
+                            name="dateTime"
+                            onChange={handleChange}
+                            value={booskaFormData.dateTime}
+                            maxLength="225"
+                            rows="3"
+                            required
                           />
-                          {validation.touched.witnesses && validation.errors.witnesses ? (
-                            <FormFeedback type="invalid">{validation.errors.witnesses}</FormFeedback>
-                          ) : null}
+
                         </FormGroup>
                       </Col>
-                      <Col md="12">
+                      <Col md="8">
 
                         <FormGroup className="mb-3">
                           <Label htmlFor="validationCustom05">Faahfaahin</Label>
-
-
                           <Input
                             type="textarea"
                             id="textarea"
-                            onChange={validation.handleChange}
-                            onBlur={validation.handleBlur}
-                            value={validation.values.description || ""}
+                            name="description"
+                            onChange={handleChange}
+                            value={booskaFormData.description || ""}
                             maxLength="225"
                             rows="3"
+                            required
                             placeholder="This textarea has a limit of 225 chars."
                           />
-                          {validation.touched.description && validation.errors.description ? (
-                            <FormFeedback type="invalid">{validation.errors.description}</FormFeedback>
-                          ) : null}
+
                         </FormGroup>
                       </Col>
                     </Row>

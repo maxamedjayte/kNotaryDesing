@@ -39,3 +39,14 @@ export const createTransactionForTheUser = async (body) => {
         return null;
     }
 };
+export const createBoss = async (body) => {
+    try {
+        const { data } = await axios.post(
+            `api/booska-create/`,
+            body
+        );
+        return data;
+    } catch (error) {
+        return null;
+    }
+};
