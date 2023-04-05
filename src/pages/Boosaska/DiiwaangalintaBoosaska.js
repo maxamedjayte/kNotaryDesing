@@ -64,7 +64,7 @@ const DiiwaangalintaBooska = () => {
       magacaBooska: Yup.string().required("Soo gali magaca booska"),
       lootoNum: Yup.string().required("Soo gali looto Num"),
       soone: Yup.string().required("Soo gali Soonaha Booska"),
-      whereComes: Yup.string().required("Dooro Laga iibiyaha"),
+      whereComes: Yup.object().shape({id: Yup.string().required("Dooro Laga iibiyaha"),}),
       price: Yup.number().required("Soo Gali qiimaha"),
       witnesses: Yup.string().required("Dooro Yaa laga iib-shay"),
       description: Yup.string().required("Soo gali faahfaahin"),
@@ -268,7 +268,7 @@ const DiiwaangalintaBooska = () => {
                             classNamePrefix="select2-selection"
                             onChange={value => validation.setFieldValue("whereComes", value.value)}
                             onBlur={validation.handleBlur}
-                            value={validation.values.whereComes || ""}
+                            value={ whereComes.find(vl=>{ return validation.values.whereComes==vl.value })}
                             invalid={
                               validation.touched.whereComes && validation.errors.whereComes ? true : false
                             }
