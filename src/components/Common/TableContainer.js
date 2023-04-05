@@ -57,7 +57,7 @@ function GlobalFilter({
       isGlobalFilter,
       isAddOptions,
       isAddUserList,
-      handleOrderClicks,
+      handleMacaamiilCreateClicks,
       handleUserClick,
       handleCustomerClick,
       isAddCustList,
@@ -146,11 +146,11 @@ function GlobalFilter({
               <Button
                 type="button"
                 color="success"
-                className="btn-rounded  mb-2 me-2"
-                onClick={handleOrderClicks}
+                className="btn-rounded-2  mb-2 me-2"
+                onClick={handleMacaamiilCreateClicks}
               >
                 <i className="mdi mdi-plus me-1" />
-                Add New Order
+               Diiwaangalinta Macaamiil
               </Button>
             </div>
           </Col>

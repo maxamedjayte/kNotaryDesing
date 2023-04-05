@@ -36,49 +36,49 @@ import {
 } from "reactstrap";
 import DeleteModal from "components/Common/DeleteModal";
 import TableContainer from "components/Common/TableContainer";
-import { httpFetcher } from "pages/services/fetchingData";
+import { createMacaamiilInfo, httpFetcher, updateMacaamiilInfo } from "pages/services/fetchingData";
 import useSWR from 'swr';
 
 function XogtaDiiwaangalintaMacamiisha() {
 
   //meta title
-  document.title="Xogta Macaamiisha | kNotary - React Admin & Dashboard";
+  document.title = "Xogta Macaamiisha | kNotary - React Admin & Dashboard";
   const { data: clientsUsers, error: clientsUsersError } = useSWR(`/api/client-list/`, httpFetcher);
 
   const [modal, setModal] = useState(false);
   const [modal1, setModal1] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
+  const [macaamiilFormData,setMacaamiilFormData] = useState();
 
-  const [orderList, setOrderList] = useState([]);
-  const [order, setOrder] = useState(null);
+  const [macamiil, setMacaamiil] = useState(null);
   const FullName = (cell) => {
     return (
-    <Link to="#" >
-    <div className="d-flex">
+      <Link to="#" >
+        <div className="d-flex">
 
-        <div className="align-self-center me-3">
+          <div className="align-self-center me-3">
             <img
-                src={`http://127.0.0.1:8000${cell.row.original.image}`}
-                className="rounded-circle avatar-xs"
-                alt=""
+              src={`http://127.0.0.1:8000${cell.row.original.image}`}
+              className="rounded-circle avatar-xs"
+              alt=""
             />
-        </div>
+          </div>
 
-        <div className="flex-grow-1 overflow-hidden">
+          <div className="flex-grow-1 overflow-hidden">
             <h5 className="text-truncate font-size-14 mb-1">
-                {cell.value}
+              {cell.value}
             </h5>
             <p className="text-truncate mb-0">
-                {cell.row.original.number}
+              {cell.row.original.number}
             </p>
-        </div>
-        {/* <div className="font-size-11">
+          </div>
+          {/* <div className="font-size-11">
             "{chat.time}"
         </div> */}
-    </div>
-    </Link>
+        </div>
+      </Link>
     );
-};
+  };
 
   // validation
   const validation = useFormik({
@@ -86,52 +86,62 @@ function XogtaDiiwaangalintaMacamiisha() {
     enableReinitialize: true,
 
     initialValues: {
-      id: (order && order.id) || '',
-      name: (order && order.name) || '',
-      dateOfBirth: (order && order.dateOfBirth) || '',
-      balance: (order && order.balance) || '',
-      dateTimeRegistred: (order && order.dateTimeRegistred) || 'Paid',
-      badgeclass: (order && order.badgeclass) || 'success',
-      typeOfMoney: (order && order.typeOfMoney) || 'Mastercard',
+      id: (macamiil && macamiil.id) || '',
+      name: (macamiil && macamiil.name) || '',
+      image: (macamiil && macamiil.image) || '',
+      number: (macamiil && macamiil.number) || '',
+      number2: (macamiil && macamiil.number2) || '',
+      gender: (macamiil && macamiil.gender) || 'Lab',
+      dateOfBirth: (macamiil && macamiil.dateOfBirth) || '',
+      balance: (macamiil && macamiil.balance) || '',
+      dateTimeRegistred: (macamiil && macamiil.dateTimeRegistred) || '',
+      typeOfMoney: (macamiil && macamiil.typeOfMoney) || 'N/A',
     },
     validationSchema: Yup.object({
-      id: Yup.string().required("Please Enter Your Order Id"),
+      id: Yup.string(),
       name: Yup.string().required("Fadlan Soo Gali Magaca"),
-      dateOfBirth: Yup.string().required("Please Enter Your Order Date"),
-      balance: Yup.string().required("Total Amount"),
-      dateTimeRegistred: Yup.string().required("Please Enter Your Payment Status"),
-      badgeclass: Yup.string().required("Please Enter Your Badge Class"),
+      image: Yup.string(),
+      number: Yup.number().required("Fadlan Soo Gali Number"),
+      number2: Yup.number(),
+      dateOfBirth: Yup.string().required("Soo Gali tarikhda dhalashada"),
+      balance: Yup.string().required("Haraaga Amount"),
+      dateTimeRegistred: Yup.string(),
+      gender: Yup.string().required("Dooro Jinsiga"),
       typeOfMoney: Yup.string().required("Please Enter Your Payment Method"),
     }),
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
+      let response;
       if (isEdit) {
-        const updateOrder = {
-          id: values.id,
-          name: values.name,
-          dateOfBirth: values.dateOfBirth,
-          balance: values.balance,
-          dateTimeRegistred: values.dateTimeRegistred,
-          typeOfMoney: values.typeOfMoney,
-          badgeclass: values.badgeclass,
-        };
-        console.log("updateOrder", updateOrder);
-        // update order
-        dispatch(onUpdateOrder(updateOrder));
+        // const updateOrder = {
+        //   id: values.id,
+        //   name: values.name,
+        //   image: values.image,
+        //   number: values.number,
+        //   number2: values.number2,
+        //   dateOfBirth: values.dateOfBirth,
+        //   balance: values.balance,
+        //   dateTimeRegistred: values.dateTimeRegistred,
+        //   typeOfMoney: values.typeOfMoney,
+        //   gender: values.gender,
+        // };
+        // console.log("updateOrder", updateOrder);
+        for (const [key, value] of macaamiilFormData) {
+          if (key == 'image') {
+            if (value.name == '') {
+              macaamiilFormData.delete("image")
+            }
+          }
+        }
+        // update macamiil
+        response=await updateMacaamiilInfo(macaamiilFormData, values.id);
+        // dispatch(onUpdateOrder(updateOrder));
         validation.resetForm();
       } else {
-        const newOrder = {
-          id: Math.floor(Math.random() * (30 - 20)) + 20,
-          id: values["id"],
-          name: values["name"],
-          dateOfBirth: values["dateOfBirth"],
-          balance: values["balance"],
-          dateTimeRegistred: values["dateTimeRegistred"],
-          typeOfMoney: values["typeOfMoney"],
-          badgeclass: values["badgeclass"],
-        };
-        console.log("newOrder", newOrder);
-        // save new order
-        dispatch(onAddNewOrder(newOrder));
+        
+        console.log(macaamiilFormData)
+        response= await createMacaamiilInfo(macaamiilFormData)
+        console.log(response)
+        // dispatch(onAddNewOrder(newOrder));
         validation.resetForm();
       }
       toggle();
@@ -146,52 +156,51 @@ function XogtaDiiwaangalintaMacamiisha() {
 
 
   useEffect(() => {
-    
+
   }, [clientsUsers]);
 
   const toggle = () => {
     if (modal) {
       setModal(false);
-      setOrder(null);
+      setMacaamiil(null);
     } else {
       setModal(true);
     }
   };
 
   const handleOrderClick = arg => {
-    const order = arg;
-    setOrder({
-      id: order.id,
-      id: order.id,
-      name: order.name,
-      dateOfBirth: order.dateOfBirth,
-      balance: order.balance,
-      dateTimeRegistred: order.dateTimeRegistred,
-      typeOfMoney: order.typeOfMoney,
-      badgeclass: order.badgeclass,
+    const macamiilArg = arg;
+    setMacaamiil({
+      id: macamiilArg.id,
+      name: macamiilArg.name,
+      number: macamiilArg.number,
+      number2: macamiilArg.number2,
+      gender: macamiilArg.gender,
+      dateOfBirth: macamiilArg.dateOfBirth,
+      balance: macamiilArg.balance,
+      dateTimeRegistred: macamiilArg.dateTimeRegistred,
+      typeOfMoney: macamiilArg.typeOfMoney,
     });
-
     setIsEdit(true);
 
     toggle();
   };
 
-  //delete order
+  //delete macamiil
   const [deleteModal, setDeleteModal] = useState(false);
 
-  const onClickDelete = (order) => {
-    setOrder(order);
+  const onClickDelete = (macamiil) => {
+    setMacaamiil(macamiil);
     setDeleteModal(true);
   };
 
   const handleDeleteOrder = () => {
-    if (order.id) {
-      dispatch(onDeleteOrder(order));
+    if (macamiil.id) {
+      dispatch(onDeleteOrder(macamiil));
       setDeleteModal(false);
     }
   };
-  const handleOrderClicks = () => {
-    setOrderList("");
+  const handleMacaamiilCreateClicks = () => {
     setIsEdit(false);
     toggle();
   };
@@ -202,8 +211,8 @@ function XogtaDiiwaangalintaMacamiisha() {
       {
         Header: 'ID',
         accessor: 'id',
-        width:"10px",
-        disableFilters:true,
+        width: "10px",
+        disableFilters: true,
         Cell: (cellProps) => {
           return <strong> {cellProps.value ? cellProps.value : ''}</strong>;
         }
@@ -213,7 +222,7 @@ function XogtaDiiwaangalintaMacamiisha() {
         accessor: 'name',
         filterable: true,
         Cell: (cellProps) => {
-          return <FullName {...cellProps}   />
+          return <FullName {...cellProps} />
         }
       },
       {
@@ -242,13 +251,13 @@ function XogtaDiiwaangalintaMacamiisha() {
       },
       {
         Header: 'Nuuca-Lacagta',
-        disableFilters:true,
+        disableFilters: true,
         accessor: 'typeOfMoney',
         Cell: (cellProps) => {
           return cellProps.value ? cellProps.value : '';
         }
       },
-      
+
       {
         Header: 'Action',
         accessor: 'action',
@@ -259,10 +268,7 @@ function XogtaDiiwaangalintaMacamiisha() {
               <Link
                 to={`/xogta-macaamiilka/${cellProps.row.original.id}/`}
                 className="text-info"
-                onClick={() => {
-                  const orderData = cellProps.row.original;
-                  handleOrderClick(orderData);
-                }}
+                
               >
                 <i className="mdi mdi-eye font-size-18" id="edittooltip" />
                 <UncontrolledTooltip placement="top" target="edittooltip">
@@ -273,8 +279,8 @@ function XogtaDiiwaangalintaMacamiisha() {
                 to="#"
                 className="text-success"
                 onClick={() => {
-                  const orderData = cellProps.row.original;
-                  handleOrderClick(orderData);
+                  const macamiilData = cellProps.row.original;
+                  handleOrderClick(macamiilData);
                 }}
               >
                 <i className="mdi mdi-pencil font-size-18" id="edittooltip" />
@@ -286,8 +292,8 @@ function XogtaDiiwaangalintaMacamiisha() {
                 to="#"
                 className="text-danger"
                 onClick={() => {
-                  const orderData = cellProps.row.original;
-                  onClickDelete(orderData);
+                  const macamiilData = cellProps.row.original;
+                  onClickDelete(macamiilData);
                 }}
               >
                 <i className="mdi mdi-delete font-size-18" id="deletetooltip" />
@@ -323,47 +329,51 @@ function XogtaDiiwaangalintaMacamiisha() {
                     data={clientsUsers}
                     isGlobalFilter={true}
                     isAddOptions={true}
-                    handleOrderClicks={handleOrderClicks}
+                    handleMacaamiilCreateClicks={handleMacaamiilCreateClicks}
                     customPageSize={10}
                     className="custom-header-css"
-                  />):null}
-                  
+                  />) : null}
+
                 </CardBody>
               </Card>
             </Col>
           </Row>
-          <Modal isOpen={modal} toggle={toggle}>
+          <Modal size="lg" isOpen={modal} toggle={toggle}>
             <ModalHeader toggle={toggle} tag="h4">
-              {!!isEdit ? "Edit Order" : "Add Order"}
+              {!!isEdit ? "Wax-ka badal macaamiil" : "Diiwaangali Macaamiil"}
             </ModalHeader>
             <ModalBody>
-              <Form
+              <Form 
                 onSubmit={(e) => {
                   e.preventDefault();
-                  validation.handleSubmit();
+                  setMacaamiilFormData(new FormData(e.target))
+                  validation.handleSubmit(e);
                   return false;
                 }}
               >
                 <Row form>
-                  <Col className="col-12">
-                    <div className="mb-3">
-                      <Label className="form-label">Id</Label>
+                <Input
+                    name="id"
+                    hidden={true}
+                    onChange={validation.handleChange}
+                    value={validation.values.id || ""}
+                    
+                  />
+                  <Col className="col-6">
+                    <div className="mb-2">
+                      <Label className="form-label">Sawirka</Label>
                       <Input
-                        name="id"
-                        type="text"
-                        disabled
+                        name="image"
+                        type="file"
+                        onChange={validation.handleChange}
                         onBlur={validation.handleBlur}
-                        value={validation.values.id || ""}
-                        invalid={
-                          validation.touched.id && validation.errors.id ? true : false
-                        }
+                        value={validation.values.image || ""}
+                       
                       />
-                      {validation.touched.id && validation.errors.id ? (
-                        <FormFeedback type="invalid">{validation.errors.id}</FormFeedback>
-                      ) : null}
+                      
                     </div>
-                    <div className="mb-3">
-                      <Label className="form-label">Billing Name</Label>
+                    <div className="mb-2">
+                      <Label className="form-label">Full-Name</Label>
                       <Input
                         name="name"
                         type="text"
@@ -381,25 +391,65 @@ function XogtaDiiwaangalintaMacamiisha() {
                         <FormFeedback type="invalid">{validation.errors.name}</FormFeedback>
                       ) : null}
                     </div>
-                    <div className="mb-3">
-                      <Label className="form-label">Order Date</Label>
+                    <div className="mb-2">
+                      <Label className="form-label">Number</Label>
                       <Input
-                        name="dateOfBirth"
-                        type="date"
-                        // value={orderList.dateOfBirth || ""}
+                        name="number"
+                        type="text"
+                        validate={{
+                          required: { value: true },
+                        }}
                         onChange={validation.handleChange}
                         onBlur={validation.handleBlur}
-                        value={validation.values.dateOfBirth || ""}
+                        value={validation.values.number || ""}
                         invalid={
-                          validation.touched.dateOfBirth && validation.errors.dateOfBirth ? true : false
+                          validation.touched.number && validation.errors.number ? true : false
                         }
                       />
-                      {validation.touched.dateOfBirth && validation.errors.dateOfBirth ? (
-                        <FormFeedback type="invalid">{validation.errors.dateOfBirth}</FormFeedback>
+                      {validation.touched.number && validation.errors.number ? (
+                        <FormFeedback type="invalid">{validation.errors.number}</FormFeedback>
                       ) : null}
                     </div>
                     <div className="mb-3">
-                      <Label className="form-label">Total</Label>
+                      <Label className="form-label">Number2</Label>
+                      <Input
+                        name="number2"
+                        type="text"
+                        validate={{
+                          required: { value: true },
+                        }}
+                        onChange={validation.handleChange}
+                        onBlur={validation.handleBlur}
+                        value={validation.values.number2 || ""}
+                        invalid={
+                          validation.touched.number2 && validation.errors.number2 ? true : false
+                        }
+                      />
+                      {validation.touched.number2 && validation.errors.number2 ? (
+                        <FormFeedback type="invalid">{validation.errors.number2}</FormFeedback>
+                      ) : null}
+                    </div>
+                  </Col>
+
+                  <Col col={6}>                    <div className="mb-3">
+                    <Label className="form-label">Tariikhda Dhalashada</Label>
+                    <Input
+                      name="dateOfBirth"
+                      type="date"
+                      // value={macamiilList.dateOfBirth || ""}
+                      onChange={validation.handleChange}
+                      onBlur={validation.handleBlur}
+                      value={validation.values.dateOfBirth || ""}
+                      invalid={
+                        validation.touched.dateOfBirth && validation.errors.dateOfBirth ? true : false
+                      }
+                    />
+                    {validation.touched.dateOfBirth && validation.errors.dateOfBirth ? (
+                      <FormFeedback type="invalid">{validation.errors.dateOfBirth}</FormFeedback>
+                    ) : null}
+                  </div>
+                    <div className="mb-3">
+                      <Label className="form-label">Lacagta Haraaga</Label>
                       <Input
                         name="balance"
                         type="text"
@@ -414,43 +464,23 @@ function XogtaDiiwaangalintaMacamiisha() {
                         <FormFeedback type="invalid">{validation.errors.balance}</FormFeedback>
                       ) : null}
                     </div>
+                        
                     <div className="mb-3">
-                      <Label className="form-label">Total</Label>
+                      <Label className="form-label">Jinsiga Shaqsiga</Label>
                       <Input
-                        name="dateTimeRegistred"
-                        type="select"
-                        className="form-select"
-                        onChange={validation.handleChange}
-                        onBlur={validation.handleBlur}
-                        value={
-                          validation.values.dateTimeRegistred || ""
-                        }
-                      >
-                        <option>Paid</option>
-                        <option>Chargeback</option>
-                        <option>Refund</option>
-                      </Input>
-                      {validation.touched.dateTimeRegistred && validation.errors.dateTimeRegistred ? (
-                        <FormFeedback type="invalid">{validation.errors.dateTimeRegistred}</FormFeedback>
-                      ) : null}
-                    </div>
-                    <div className="mb-3">
-                      <Label className="form-label">Badge Class</Label>
-                      <Input
-                        name="badgeclass"
+                        name="gender"
                         type="select"
                         className="form-select"
                         onChange={validation.handleChange}
                         onBlur={validation.handleBlur}
                         value={validation.values.badgeclass || ""}
                       >
-                        <option>success</option>
-                        <option>danger</option>
-                        <option>warning</option>
+                        <option value="Lab">Lab</option>
+                        <option value="Dhadig">Dhadig</option>
                       </Input>
                     </div>
                     <div className="mb-3">
-                      <Label className="form-label">Payment Method</Label>
+                      <Label className="form-label">Nooca Lacagta</Label>
                       <Input
                         name="typeOfMoney"
                         type="select"
@@ -461,26 +491,24 @@ function XogtaDiiwaangalintaMacamiisha() {
                           validation.values.typeOfMoney || ""
                         }
                       >
-                        <option>Mastercard</option>
-                        <option>Visa</option>
-                        <option>Paypal</option>
-                        <option>COD</option>
+                        <option>N/A</option>
+                        <option>BY-ELECTRIC</option>
+                        <option>CASH</option>
                       </Input>
                     </div>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col>
+                    <div className="mb-3">
                     <div className="text-end">
                       <button
                         type="submit"
                         className="btn btn-success save-user"
                       >
-                        Save
+                        Save  c
                       </button>
+                    </div>
                     </div>
                   </Col>
                 </Row>
+                
               </Form>
             </ModalBody>
           </Modal>
