@@ -13,9 +13,6 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 
 //Social Media Imports
-import { GoogleLogin } from "react-google-login";
-// import TwitterLogin from "react-twitter-auth"
-import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
 
 // actions
 import { loginUser, socialLogin } from "../../store/actions";
@@ -29,8 +26,8 @@ import { facebook, google } from "../../config";
 
 const Login = props => {
 
-   //meta title
-  document.title="Login | Skote - React Admin & Dashboard Template";
+  //meta title
+  document.title = "Login | kNotary - React Admin & Dashboard";
 
   const dispatch = useDispatch();
 
@@ -55,38 +52,15 @@ const Login = props => {
     error: state.Login.error,
   }));
 
-  const signIn = (res, type) => {
-    if (type === "google" && res) {
-      const postData = {
-        name: res.profileObj.name,
-        email: res.profileObj.email,
-        token: res.tokenObj.access_token,
-        idToken: res.tokenId,
-      };
-      dispatch(socialLogin(postData, props.history, type));
-    } else if (type === "facebook" && res) {
-      const postData = {
-        name: res.name,
-        email: res.email,
-        token: res.accessToken,
-        idToken: res.tokenId,
-      };
-      dispatch(socialLogin(postData, props.history, type));
-    }
-  };
 
   //handleGoogleLoginResponse
-  const googleResponse = response => {
-    signIn(response, "google");
-  };
+
 
   //handleTwitterLoginResponse
   // const twitterResponse = e => {}
 
   //handleFacebookLoginResponse
-  const facebookResponse = response => {
-    signIn(response, "facebook");
-  };
+
 
   return (
     <React.Fragment>
@@ -199,68 +173,9 @@ const Login = props => {
                         </button>
                       </div>
 
-                      <div className="mt-4 text-center">
-                        <h5 className="font-size-14 mb-3">Sign in with</h5>
-
-                        <ul className="list-inline">
-                          <li className="list-inline-item">
-                            <FacebookLogin
-                              appId={facebook.APP_ID}
-                              autoLoad={false}
-                              callback={facebookResponse}
-                              render={renderProps => (
-                                <Link
-                                  to="#"
-                                  className="social-list-item bg-primary text-white border-primary"
-                                  onClick={renderProps.onClick}
-                                >
-                                  <i className="mdi mdi-facebook" />
-                                </Link>
-                              )}
-                            />
-                          </li>
-                          {/*<li className="list-inline-item">*/}
-                          {/*  <TwitterLogin*/}
-                          {/*    loginUrl={*/}
-                          {/*      "http://localhost:4000/api/v1/auth/twitter"*/}
-                          {/*    }*/}
-                          {/*    onSuccess={this.twitterResponse}*/}
-                          {/*    onFailure={this.onFailure}*/}
-                          {/*    requestTokenUrl={*/}
-                          {/*      "http://localhost:4000/api/v1/auth/twitter/revers"*/}
-                          {/*    }*/}
-                          {/*    showIcon={false}*/}
-                          {/*    tag={"div"}*/}
-                          {/*  >*/}
-                          {/*    <a*/}
-                          {/*      href=""*/}
-                          {/*      className="social-list-item bg-info text-white border-info"*/}
-                          {/*    >*/}
-                          {/*      <i className="mdi mdi-twitter"/>*/}
-                          {/*    </a>*/}
-                          {/*  </TwitterLogin>*/}
-                          {/*</li>*/}
-                          <li className="list-inline-item">
-                            <GoogleLogin
-                              clientId={google.CLIENT_ID}
-                              render={renderProps => (
-                                <Link
-                                  to="#"
-                                  className="social-list-item bg-danger text-white border-danger"
-                                  onClick={renderProps.onClick}
-                                >
-                                  <i className="mdi mdi-google" />
-                                </Link>
-                              )}
-                              onSuccess={googleResponse}
-                              onFailure={() => { }}
-                            />
-                          </li>
-                        </ul>
-                      </div>
 
                       <div className="mt-4 text-center">
-                        <Link to="/forgot-password" className="text-muted">
+                        <Link to="#" className="text-muted">
                           <i className="mdi mdi-lock me-1" />
                           Forgot your password?
                         </Link>
@@ -269,19 +184,7 @@ const Login = props => {
                   </div>
                 </CardBody>
               </Card>
-              <div className="mt-5 text-center">
-                <p>
-                  Don&#39;t have an account ?{" "}
-                  <Link to="/register" className="fw-medium text-primary">
-                    {" "}
-                    Signup now{" "}
-                  </Link>{" "}
-                </p>
-                <p>
-                  © {new Date().getFullYear()} Skote. Crafted with{" "}
-                  <i className="mdi mdi-heart text-danger" /> by Themesbrand
-                </p>
-              </div>
+              
             </Col>
           </Row>
         </Container>

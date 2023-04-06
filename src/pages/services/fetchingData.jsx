@@ -50,3 +50,15 @@ export const createBoss = async (body) => {
         return null;
     }
 };
+
+export const createBooskaChanges = async (body) => {
+    try {
+        const { data } = await axios.post(
+            `api/booskaChanges-create/`,
+            body
+        );
+        return data;
+    } catch (error) {
+        return null;
+    }
+};

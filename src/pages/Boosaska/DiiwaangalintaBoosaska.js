@@ -81,26 +81,23 @@ const DiiwaangalintaBooska = () => {
 
 
 
+
   const regExp = /\b\d{5}\b/;
 
   useEffect(() => {
     const whereComesArry = []
-    const witnessesArry = []
-    const whoHassArry = []
 
 
     if (clientsUsers) {
       clientsUsers.map((user) => {
         whereComesArry.push({ value: user.id, label: user.name });
-        witnessesArry.push({ value: user.id, label: user.name });
-        whoHassArry.push({ value: user.id, label: user.name });
       });
     }
 
 
     setWhereComes(whereComesArry)
-    setWitness(witnessesArry)
-    setWhoHasses(whoHassArry)
+    setWitness(whereComesArry)
+    setWhoHasses(whereComesArry)
 
   }, [clientsUsers])
   async function handleSubmit(e) {
@@ -110,9 +107,15 @@ const DiiwaangalintaBooska = () => {
       
     let response= await createBoss(formData);
     console.log(response);
-    if(response.status="error"){
+
+    if(response.status="success"){
+      
+      toastr.success('lama diiwaangalin fadlan ku celi markale')
       // toastr.warning("lama diiwaangalin fadlan ku celi markale")
       setBooskaFormData({})
+      
+    }else{
+      // setBooskaFormData({})
     }
     } catch (error) {
       console.log(error);
@@ -209,7 +212,8 @@ const DiiwaangalintaBooska = () => {
                             className="form-control"
                             id="validationCustom02"
                             onChange={handleChange}
-                            value={booskaFormData.magacaBooska || ""}
+                            required
+                            value={booskaFormData.magacaBooska}
 
                           />
 
@@ -225,10 +229,10 @@ const DiiwaangalintaBooska = () => {
                             name="lootoNum"
                             placeholder="Looto Number"
                             type="text"
+                            required
                             className="form-control"
-                            onChange={validation.handleChange}
-                            onBlur={validation.handleBlur}
-                            value={validation.values.lootoNum || ""}
+                            onChange={handleChange}
+                            value={booskaFormData.lootoNum }
 
                           />
 
@@ -241,10 +245,11 @@ const DiiwaangalintaBooska = () => {
                             name="soone"
                             placeholder="soone"
                             type="text"
+                            required
                             className="form-control"
                             id="validationCustom04"
                             onChange={handleChange}
-                            value={booskaFormData.soone || ""}
+                            value={booskaFormData.soone}
 
                           />
 
@@ -263,7 +268,7 @@ const DiiwaangalintaBooska = () => {
                               placeholder="Qiimaha Booska"
                               type="number"
                               onChange={handleChange}
-                              value={booskaFormData.price || ""}
+                              value={booskaFormData.price}
 
                             />
                           </InputGroup>
@@ -271,18 +276,18 @@ const DiiwaangalintaBooska = () => {
 
                         </FormGroup>
                       </Col>
+                     
                       <Col md="6">
-                        <FormGroup className="mb-2">
+                        <FormGroup className="mb-3">
                           <Label htmlFor="validationCustom01">Yaa Laga IIBSHAY</Label>
                           <Select
                             placeholder="Laga IIBSHAY"
-                            type="text"
-                            name="whoHas"
+                            name="whereComes"
                             id="validationCustom01"
-                            options={whoHasses}
+                            options={whereComes}
                             classNamePrefix="select2-selection"
-                            onChange={value => setBooskaFormData((prev) => ({ ...prev, ["whoHas"]: value.value }))}
-                            value={whoHasses?.find(vl => { return booskaFormData.whoHas == vl.value })}
+                            onChange={value => setBooskaFormData((prev) => ({ ...prev, ["whereComes"]: value.value })) }
+                            value={whereComes?.find(vl => {return booskaFormData.whereComes == vl.value })}
                             required
                           />
 
@@ -293,7 +298,7 @@ const DiiwaangalintaBooska = () => {
                           <Label htmlFor="validationCustom02">Marqaatiyaal</Label>
                           <Select
                             placeholder="Door Marqaatiyaasha"
-                            type="text"
+                            name="witnesses"
                             className="form-control"
                             id="validationCustom02"
                             options={witness}
@@ -307,17 +312,18 @@ const DiiwaangalintaBooska = () => {
 
                         </FormGroup>
                       </Col>
+                      
                       <Col md="12">
-                        <FormGroup className="mb-3">
+                        <FormGroup className="mb-2">
                           <Label htmlFor="validationCustom01">Yaa iska-leh</Label>
                           <Select
                             placeholder="Laga IIBSHAY"
-                            type="text"
+                            name="whoHas"
                             id="validationCustom01"
-                            options={whereComes}
+                            options={whoHasses}
                             classNamePrefix="select2-selection"
-                            onChange={value => setBooskaFormData((prev) => ({ ...prev, ["whereComes"]: value.value }))}
-                            value={whereComes?.find(vl => { return booskaFormData.whereComes == vl.value })}
+                            onChange={value => setBooskaFormData((prev) => ({ ...prev, ["whoHas"]: value.value }))}
+                            value={whoHasses?.find(vl => { return booskaFormData.whoHas == vl.value })}
                             required
                           />
 
@@ -332,8 +338,6 @@ const DiiwaangalintaBooska = () => {
                             name="dateTime"
                             onChange={handleChange}
                             value={booskaFormData.dateTime}
-                            maxLength="225"
-                            rows="3"
                             required
                           />
 

@@ -2,7 +2,6 @@ import React from "react"
 import { Redirect } from "react-router-dom"
 
 // Profile
-import UserProfile from "../pages/Authentication/user-profile"
 
 // Authentication related pages
 import Login from "../pages/Authentication/Login"
@@ -16,14 +15,15 @@ import XogtaBoosaska from "pages/Boosaska/XogtaBoosaska"
 import XogtaDiiwaangalintaMacamiisha from "pages/Clients/XogtaDiiwaangalintaMacamiisha"
 import DiiwaangalintaBoosaskaCopy from "pages/Boosaska/DiiwaangalintaBoosaska"
 import XogtaMacaamiilka from "pages/Clients/XogtaMacaamiilka"
+import DhaqdhaqaaqaBoosaska from "pages/Boosaska/DhaqdhaqaaqaBoosaska"
 
 const authProtectedRoutes = [
   { path: "/dashboard", component: Dashboard },
 
   // //profile
-  { path: "/profile", component: UserProfile },
   { path: "/diiwaangalinta-boosaska", component: DiiwaangalintaBoosaskaCopy },
   { path: "/xogta-boosaska", component: XogtaBoosaska },
+  { path: "/dhaqdhaqaaqa-boosaska", component: DhaqdhaqaaqaBoosaska },
   { path: "/xogta-diiwaangalinta-macaamiisha", component: XogtaDiiwaangalintaMacamiisha },
   { path: "/xogta-macaamiilka/:id", component: XogtaMacaamiilka },
 

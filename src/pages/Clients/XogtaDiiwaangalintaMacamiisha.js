@@ -155,9 +155,6 @@ function XogtaDiiwaangalintaMacamiisha() {
 
 
 
-  useEffect(() => {
-
-  }, [clientsUsers]);
 
   const toggle = () => {
     if (modal) {

@@ -38,7 +38,6 @@ import { getUserProfile } from "store/actions";
 import MiniCards from "./mini-card";
 import { createTransactionForTheUser, httpFetcher } from "pages/services/fetchingData";
 import useSWR from "swr";
-import { success } from "toastr";
 
 const XogtaMacaamiilka = props => {
   const [modal, setModal] = useState(false);
@@ -351,10 +350,10 @@ const XogtaMacaamiilka = props => {
                     <div className="mb-2 d-flex justify-content-between">
 
                       <CardTitle className="mb-3">Boosaska Macaamiilka</CardTitle>
-                      <Button size="sm" type="success" > Diiwaangali Boos Cusub</Button>
+                      <Button size="sm" type="success" >Diiwaangali Boos Cusub</Button>
                     </div>
                     <div id="revenue-chart">
-                      <div className="table-responsive">
+                    <div className="table-responsive">
                         <Table className="table mb-0">
                           <thead className="table-dark">
                             <tr>

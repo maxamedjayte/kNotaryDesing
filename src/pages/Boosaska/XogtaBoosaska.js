@@ -13,15 +13,6 @@ import {
   deleteOrder as onDeleteOrder,
 } from "store/actions";
 
-import {
-  OrderId,
-  BillingName,
-  Date,
-  Total,
-  PaymentStatus,
-  PaymentMethod
-}
-  from "./EcommerceOrderCol";
 
 //redux
 import { useSelector, useDispatch } from "react-redux";
@@ -44,17 +35,19 @@ import {
 } from "reactstrap";
 import DeleteModal from "components/Common/DeleteModal";
 import TableContainer from "components/Common/TableContainer";
+import { httpFetcher } from "pages/services/fetchingData";
+import useSWR from 'swr';
 
 function XogtaBoosaska() {
 
   //meta title
-  document.title="Orders | Skote - React Admin & Dashboard Template";
-
+  document.title="Xogta Boosaska | kNotary - React Admin & Dashboard";
+  const { data: xogtaBoosaska, error: xogtaBoosaskaError } = useSWR(`/api/booska-list/`, httpFetcher);
+  console.log(xogtaBoosaska)
   const [modal, setModal] = useState(false);
   const [modal1, setModal1] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
 
-  const [orderList, setOrderList] = useState([]);
   const [order, setOrder] = useState(null);
 
   // validation
@@ -124,22 +117,36 @@ function XogtaBoosaska() {
     orders: state.ecommerce.orders,
   }));
 
-  useEffect(() => {
-    if (orders && !orders.length) {
-      dispatch(onGetOrders());
-    }
-  }, [dispatch, orders]);
+  const UserInfoAvator = (cell) => {
+    return (
+      <Link to={`/xogta-macaamiilka/${cell.value.id}/`} >
+        <div className="d-flex">
 
-  useEffect(() => {
-    setOrderList(orders);
-  }, [orders]);
+          <div className="align-self-center me-3">
+            <img
+              src={`http://127.0.0.1:8000${cell.value.image}`}
+              className="rounded-circle avatar-xs"
+              alt=""
+            />
+          </div>
 
-  useEffect(() => {
-    if (!isEmpty(orders) && !!isEdit) {
-      setOrderList(orders);
-      setIsEdit(false);
-    }
-  }, [orders]);
+          <div className="flex-grow-1 overflow-hidden">
+            <h5 className="text-truncate font-size-14 mb-1">
+              {cell.value.name}
+            </h5>
+            <p className="text-truncate mb-0 text-black">
+              {cell.value.number}
+            </p>
+          </div>
+          {/* <div className="font-size-11">
+            "{chat.time}"
+        </div> */}
+        </div>
+      </Link>
+    );
+  };
+
+
 
   const toggle = () => {
     if (modal) {
@@ -183,70 +190,83 @@ function XogtaBoosaska() {
     }
   };
   const handleOrderClicks = () => {
-    setOrderList("");
     setIsEdit(false);
     toggle();
   };
 
   const columns = useMemo(
     () => [
-
+      
       {
-        Header: 'Order ID',
-        accessor: 'orderId',
-        width: '150px',
-        style: {
-          textAlign: "center",
-          width: "10%",
-          background: "#0000",
-        },
+        Header: 'NootaayoReff',
+        accessor: 'nootaayoReff',
+        
         filterable: true,
         Cell: (cellProps) => {
-          return <OrderId {...cellProps} />;
+          return <Link to="#" className="text-body fw-bold">{cellProps.value ? cellProps.value : ''}</Link>;
         }
       },
       {
-        Header: 'Billing Name',
-        accessor: 'billingName',
+        Header: 'Sawirka',
+        accessor: 'image',
+        
         filterable: true,
         Cell: (cellProps) => {
-          return <BillingName {...cellProps} />;
+          return <Link to="#" className="text-body fw-bold">
+            <img width="100px" src="https://res.cloudinary.com/dw6vcihvc/image/upload/v1/media/images/events/general_nrwpfm" />
+            </Link>;
         }
       },
       {
-        Header: 'Date',
-        accessor: 'orderdate',
+        Header: 'Magaca Booska',
+        accessor: 'magacaBooska',
         filterable: true,
         Cell: (cellProps) => {
-          return <Date {...cellProps} />;
+          return <Link to="#" className="text-body fw-bold">{cellProps.value ? cellProps.value : ''}</Link>;
         }
       },
       {
-        Header: 'Total',
-        accessor: 'total',
+        Header: 'Looto Num',
+        accessor: 'lootoNum',
         filterable: true,
         Cell: (cellProps) => {
-          return <Total {...cellProps} />;
+          return cellProps.value ? cellProps.value : '';
         }
       },
       {
-        Header: 'Payment Status',
-        accessor: 'paymentStatus',
+        Header: 'Soone',
+        accessor: 'soone',
         filterable: true,
         Cell: (cellProps) => {
-          return <PaymentStatus {...cellProps} />;
+          return cellProps.value ? cellProps.value : '';
         }
       },
       {
-        Header: 'Payment Method',
-        accessor: 'paymentMethod',
+        Header: 'Yaa leh',
+        accessor: 'whoHas',
+        filterable: true,
         Cell: (cellProps) => {
-          return <PaymentMethod {...cellProps} />;
+          return <UserInfoAvator {...cellProps} />
         }
       },
+      {
+        Header: 'Marqaatiyaal',
+        accessor: 'id',
+        Cell: (cellProps) => {
+          return cellProps.value ? cellProps.value : '';
+        }
+      },
+      {
+        Header: 'Date Time',
+        accessor: 'dateTime',
+        Cell: (cellProps) => {
+          return cellProps.value ? cellProps.value.split("T")[0] : '';
+        }
+      },
+      
       {
         Header: 'View Details',
-        accessor: 'view',
+        accessor: 'viewd',
         disableFilters: true,
         Cell: () => {
           return (
@@ -316,15 +336,16 @@ function XogtaBoosaska() {
             <Col xs="12">
               <Card>
                 <CardBody>
-                  <TableContainer
+                {xogtaBoosaska ? (<TableContainer
                     columns={columns}
-                    data={orders}
+                    data={xogtaBoosaska}
                     isGlobalFilter={true}
                     isAddOptions={true}
                     handleOrderClicks={handleOrderClicks}
                     customPageSize={10}
                     className="custom-header-css"
-                  />
+                  />) : null}
+                 
                 </CardBody>
               </Card>
             </Col>
