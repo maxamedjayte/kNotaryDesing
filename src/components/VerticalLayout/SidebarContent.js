@@ -158,7 +158,7 @@ const SidebarContent = props => {
                   </Link>
                 </li>
                 <li>
-                  <Link to="/dhaqdhaqaaqa-boosaska">{props.t("Dhaq Dhaqaaqa Boosaska")}</Link>
+                <Link to="/dhaqdhaqaaqa-boosaska">{props.t("Dhaq Dhaqaaqa Boosaska")}</Link>
                 </li>
                 <li>
                   <Link to="/#">{props.t("Wareejinta Booska")}</Link>
@@ -301,159 +301,9 @@ const SidebarContent = props => {
 
            
 
-            <li>
-              <Link to="/#" >
-                <span className="badge rounded-pill bg-success float-end">
-                  {props.t("New")}
-                </span>
-                <i className="bx bxs-detail" />
-
-                <span>{props.t("Blog")}</span>
-              </Link>
-              <ul className="sub-menu">
-                <li>
-                  <Link to="/#">{props.t("Blog List")}</Link>
-                </li>
-                <li>
-                  <Link to="/#">{props.t("Blog Grid")}</Link>
-                </li>
-                <li>
-                  <Link to="/#">{props.t("Blog Details")}</Link>
-                </li>
-              </ul>
-            </li>
-
-          
+     
          
 
-            <li className="menu-title">{props.t("Components")}</li>
-
-        
-
-            <li>
-              <Link to="/#" className="has-arrow ">
-                <i className="bx bx-list-ul"></i>
-                <span>{props.t("Tables")}</span>
-              </Link>
-              <ul className="sub-menu">
-                <li>
-                  <Link to="/#">{props.t("Basic Tables")}</Link>
-                </li>
-                <li>
-                  <Link to="/#">{props.t("Data Tables")}</Link>
-                </li>
-                <li>
-                  <Link to="/#">
-                    {props.t("Responsive Table")}
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/#">{props.t("Editable Table")}</Link>
-                </li>
-                <li>
-                  <Link to="/#">{props.t("Drag & Drop Table")}</Link>
-                </li>
-              </ul>
-            </li>
-
-            <li>
-              <Link to="/#" className="has-arrow ">
-                <i className="bx bxs-bar-chart-alt-2"></i>
-                <span>{props.t("Charts")}</span>
-              </Link>
-
-              <ul className="sub-menu">
-                <li>
-                  <Link to="/#">{props.t("Apex charts")}</Link>
-                </li>
-                <li>
-                  <Link to="/#">{props.t("Chartist Chart")}</Link>
-                </li>
-                <li>
-                  <Link to="/#">{props.t("Chartjs Chart")}</Link>
-                </li>
-                <li>
-                  <Link to="/#">{props.t("E Chart")}</Link>
-                </li>
-                <li>
-                  <Link to="/#">
-                    {props.t("Sparkline Chart")}
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/#">{props.t("Knob Chart")}</Link>
-                </li>
-                <li>
-                  <Link to="/#">{props.t("Re Chart")}</Link>
-                </li>
-              </ul>
-            </li>
-
-            <li>
-              <Link to="/#" className="has-arrow ">
-                <i className="bx bx-aperture"></i>
-                <span>{props.t("Icons")}</span>
-              </Link>
-              <ul className="sub-menu">
-                <li>
-                  <Link to="/#">{props.t("Boxicons")}</Link>
-                </li>
-                <li>
-                  <Link to="/#">
-                    {props.t("Material Design")}
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/#">{props.t("Dripicons")}</Link>
-                </li>
-                <li>
-                  <Link to="/#">{props.t("Font awesome")}</Link>
-                </li>
-              </ul>
-            </li>
-
-            <li>
-              <Link to="/#" className="has-arrow ">
-                <i className="bx bx-map"></i>
-                <span>{props.t("Maps")}</span>
-              </Link>
-              <ul className="sub-menu">
-                <li>
-                  <Link to="/#">{props.t("Google Maps")}</Link>
-                </li>
-                <li>
-                  <Link to="/#">{props.t("Vector Maps")}</Link>
-                </li>
-                <li>
-                  <Link to="/#">{props.t("Leaflet Maps")}</Link>
-                </li>
-              </ul>
-            </li>
-
-            <li>
-              <Link to="/#" className="has-arrow ">
-                <i className="bx bx-share-alt"></i>
-                <span>{props.t("Multi Level")}</span>
-              </Link>
-              <ul className="sub-menu">
-                <li>
-                  <Link to="/#">{props.t("Level 1.1")}</Link>
-                </li>
-                <li>
-                  <Link to="/#" className="has-arrow">
-                    {props.t("Level 1.2")}
-                  </Link>
-                  <ul className="sub-menu">
-                    <li>
-                      <Link to="/#">{props.t("Level 2.1")}</Link>
-                    </li>
-                    <li>
-                      <Link to="/#">{props.t("Level 2.2")}</Link>
-                    </li>
-                  </ul>
-                </li>
-              </ul>
-            </li>
           </ul>
         </div>
       </SimpleBar>

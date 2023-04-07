@@ -40,6 +40,34 @@ import { createTransactionForTheUser, httpFetcher } from "pages/services/fetchin
 import useSWR from "swr";
 
 const XogtaMacaamiilka = props => {
+  const UserInfoAvator = (theWitnes) => {
+    return (
+      <Link to={`/xogta-macaamiilka/${theWitnes.id}/`} >
+        <div className="d-flex">
+
+          <div className="align-self-center me-3">
+            <img
+              src={`http://127.0.0.1:8000${theWitnes.image}`}
+              className="rounded-circle avatar-xs"
+              alt=""
+            />
+          </div>
+
+          <div className="flex-grow-1 overflow-hidden">
+            <h5 className="text-truncate font-size-14 mb-1">
+              {theWitnes.name}
+            </h5>
+            <p className="text-truncate mb-0 text-black">
+              {theWitnes.number}
+            </p>
+          </div>
+          {/* <div className="font-size-11">
+            "{chat.time}"
+        </div> */}
+        </div>
+      </Link>
+    );
+  };
   const [modal, setModal] = useState(false);
   const [transactionForm, setTransactionForm] = useState({})
 
@@ -88,7 +116,8 @@ const XogtaMacaamiilka = props => {
   return (
     <React.Fragment>
       <Modal size="md" isOpen={modal} >
-        <ModalHeader tag="h4">
+        <ModalHeader closeButton tag="h4">
+          
           {"Diiwaangali Dhaqdhaqaa"}
         </ModalHeader>
         <ModalBody>
@@ -408,7 +437,6 @@ const XogtaMacaamiilka = props => {
                             <th>#</th>
                             <th>NoocaDhaqdha</th>
                             <th>Lacagta</th>
-                            <th>Marqaatiyasha</th>
                             <th>Faahfaahin</th>
                             <th>Waqtiga-La</th>
                             <th>Action</th>
@@ -422,12 +450,13 @@ const XogtaMacaamiilka = props => {
                             </tr>
                           ) : (
                             clientInfo.userTransactions.map((transaction, index) => {
+                              console.log(transaction)
                               return <tr key={index}>
                                 <th scope="row">{transaction.id}</th>
                                 <td>{transaction.itReceives ? (<Badge style={{ 'backgroundColor': 'green' }} bg="success">DHIGTAY</Badge>) : (<Badge bg="success">QAATAY</Badge>)}</td>
                                 <td><span style={{ 'fontSize': '13px' }} >$</span><strong>{transaction.money}</strong> </td>
-                                <td>{transaction.description}</td>
-                                <td>{transaction.description}</td>
+                                
+                                <td>{transaction.description.substring(0,70)}</td>
                                 <td>{transaction.dateTimeTransaction.split('T')[0]}  {transaction.dateTimeTransaction.split('T')[1].split('Z')[0]}</td>
                               </tr>
                             })

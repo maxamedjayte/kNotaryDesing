@@ -77,7 +77,7 @@ const DhaqdhaqaaqaBoosaska = () => {
     try {
 
       let response = await createBooskaChanges(formData);
-
+      console.log(response)
       if (response.status = "success") {
         setBooskaFormData({})
 
