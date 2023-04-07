@@ -33,7 +33,6 @@ import { Link, withRouter } from "react-router-dom";
 //Import Breadcrumb
 import Breadcrumb from "../../components/Common/Breadcrumb";
 
-import avatar from "../../assets/images/users/avatar-1.jpg";
 // actions
 import { editProfile, resetProfileFlag } from "../../store/actions";
 import { createBooskaChanges, createBoss, httpFetcher } from "pages/services/fetchingData";
@@ -77,7 +76,7 @@ const DhaqdhaqaaqaBoosaska = () => {
     try {
 
       let response = await createBooskaChanges(formData);
-      console.log(response)
+      console.log (response)
       if (response.status = "success") {
         setBooskaFormData({})
 
