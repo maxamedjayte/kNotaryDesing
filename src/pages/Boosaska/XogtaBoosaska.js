@@ -124,7 +124,7 @@ function XogtaBoosaska() {
 
           <div className="align-self-center me-3">
             <img
-              src={`http://127.0.0.1:8000${cell.value.image}`}
+              src={`https://knotary.up.railway.app/${cell.value.image}`}
               className="rounded-circle avatar-xs"
               alt=""
             />

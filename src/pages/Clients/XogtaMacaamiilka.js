@@ -47,7 +47,7 @@ const XogtaMacaamiilka = props => {
 
           <div className="align-self-center me-3">
             <img
-              src={`http://127.0.0.1:8000${theWitnes.image}`}
+              src={`https://knotary.up.railway.app/${theWitnes.image}`}
               className="rounded-circle avatar-xs"
               alt=""
             />
@@ -229,7 +229,7 @@ const XogtaMacaamiilka = props => {
                       <Col sm="4">
                         <div className="avatar-md profile-user-wid mb-2">
                           <img
-                            src={`http://127.0.0.1:8000${clientInfo.image}`}
+                            src={`https://knotary.up.railway.app/${clientInfo.image}`}
                             alt=""
                             height="290px"
                             className="img-thumbnail rounded-circle"

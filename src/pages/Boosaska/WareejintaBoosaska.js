@@ -250,7 +250,7 @@ const WareejintaBooska = () => {
 
                                 <div className="align-self-center me-3">
                                   <img
-                                    src={`http://127.0.0.1:8000${changes.booska.image}`}
+                                    src={`https://knotary.up.railway.app/${changes.booska.image}`}
                                     className="rounded-circle avatar-xs"
                                     alt=""
                                   />
