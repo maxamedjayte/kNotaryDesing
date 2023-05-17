@@ -52,13 +52,9 @@ const Dashboard = () => {
   }));
 
   const reports = [
-    { title: "Orders", iconClass: "bx-copy-alt", description: "1,235" },
-    { title: "Revenue", iconClass: "bx-archive-in", description: "$35, 723" },
-    {
-      title: "Average Price",
-      iconClass: "bx-purchase-tag-alt",
-      description: "$16.2",
-    },
+    { title: "Boosaska", iconClass: "bx-copy-alt", description: "1,235" },
+    { title: "Macaamiisha", iconClass: "bx-archive-in", description: "$35, 723" },
+    
   ];
 
 
@@ -98,7 +94,7 @@ const Dashboard = () => {
               <Row>
                 {/* Reports Render */}
                 {reports.map((report, key) => (
-                  <Col md="4" key={"_col_" + key}>
+                  <Col md="6" key={"_col_" + key}>
                     <Card className="mini-stats-wid">
                       <CardBody>
                         <div className="d-flex">
@@ -124,7 +120,7 @@ const Dashboard = () => {
                 ))}
               </Row>
 
-              <Card>
+              {/* <Card>
                 <CardBody>
                   <div className="d-sm-flex flex-wrap">
                     <h4 className="card-title mb-4">Email Sent</h4>
@@ -178,14 +174,13 @@ const Dashboard = () => {
                       </ul>
                     </div>
                   </div>
-                  {/* <div className="clearfix"></div> */}
+                  <div className="clearfix"></div>
                   <StackedColumnChart periodData={periodData} />
                 </CardBody>
-              </Card>
+              </Card> */}
             </Col>
             <Col xl="4">
               <WelcomeComp />
-              <MonthlyEarning />
             </Col>
           
           </Row>
