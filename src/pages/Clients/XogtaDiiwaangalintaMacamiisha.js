@@ -148,6 +148,7 @@ function XogtaDiiwaangalintaMacamiisha() {
         // dispatch(onAddNewOrder(newOrder));
         validation.resetForm();
       }
+      
       toggle();
     },
   });

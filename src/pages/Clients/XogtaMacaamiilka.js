@@ -389,7 +389,6 @@ const XogtaMacaamiilka = props => {
                     <div className="mb-2 d-flex justify-content-between">
 
                       <CardTitle className="mb-3">Boosaska Macaamiilka</CardTitle>
-                      <Button size="sm" type="success" >Diiwaangali Boos Cusub</Button>
                     </div>
                     <div id="revenue-chart">
                     <div className="table-responsive">
@@ -405,8 +404,7 @@ const XogtaMacaamiilka = props => {
                               <th>Action</th>
                             </tr>
                           </thead>
-                          <tbody className="fw-bold">
-                            {clientInfo.booskaWhoHas.length == 0 ? (
+                          {clientInfo.booskaWhoHas.length == 0 ? (
                               <tr>
 
                               <h6>boos uma diiwaan gashna</h6> 
@@ -423,6 +421,8 @@ const XogtaMacaamiilka = props => {
                                 </tr>
                               })
                             )}
+                          <tbody className="fw-bold">
+                            
 
                           </tbody>
                         </Table>
