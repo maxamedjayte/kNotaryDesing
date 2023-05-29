@@ -104,27 +104,27 @@ const DiiwaangalintaBooska = () => {
     e.preventDefault();
     const formData = new FormData(e.target);
     try {
-      
-    let response= await createBoss(formData);
-    console.log(response);
 
-    if(response.status="success"){
-      
-      toastr.success('lama diiwaangalin fadlan ku celi markale')
-      // toastr.warning("lama diiwaangalin fadlan ku celi markale")
-      setBooskaFormData({})
-      
-    }else{
-      // setBooskaFormData({})
-    }
+      let response = await createBoss(formData);
+      console.log(response);
+
+      if (response.status = "success") {
+
+        toastr.success('lama diiwaangalin fadlan ku celi markale')
+        // toastr.warning("lama diiwaangalin fadlan ku celi markale")
+        setBooskaFormData({})
+
+      } else {
+        // setBooskaFormData({})
+      }
     } catch (error) {
       console.log(error);
       // toastr.success('lama diiwaangalin fadlan ku celi markale')
-      
+
     }
 
     // if(response.)
-    
+
 
   }
 
@@ -166,12 +166,24 @@ const DiiwaangalintaBooska = () => {
                   <Form className="needs-validation" onSubmit={handleSubmit}  >
                     <Row>
                       <Col md={4}  >
-                      <Card>
-                        sd
-                      </Card>
+                        <FormGroup className="mb-3">
+                          <Label htmlFor="validationCustom01">PDF FILE</Label>
+                          <Input
+                            name="pdfFile"
+                            accept="application/pdf"
+                            placeholder="Fileka Booska"
+                            type="file"
+                            className="form-control"
+                            id="validationCustom01"
+                            onChange={handleChange}
+                            value={booskaFormData.pdfFile || ""}
+
+                          />
+
+                        </FormGroup>
                       </Col>
                       <Col md={8}  >
-                      <FormGroup className="mb-3">
+                        <FormGroup className="mb-3">
                           <Label htmlFor="validationCustom01">Dooro Sawirka</Label>
                           <Input
                             name="image"
@@ -181,6 +193,22 @@ const DiiwaangalintaBooska = () => {
                             id="validationCustom01"
                             onChange={handleChange}
                             value={booskaFormData.image || ""}
+
+                          />
+
+                        </FormGroup>
+                      </Col>
+                      <Col md="12" >
+                      <FormGroup className="mb-3">
+                          <Label htmlFor="validationCustom01">Video Cadeen</Label>
+                          <Input
+                            name="videoCadeen"
+                            placeholder="Video Cadeen Link"
+                            type="text"
+                            className="form-control"
+                            id="validationCustom01"
+                            onChange={handleChange}
+                            value={booskaFormData.videoCadeen || ""}
 
                           />
 
@@ -232,7 +260,7 @@ const DiiwaangalintaBooska = () => {
                             required
                             className="form-control"
                             onChange={handleChange}
-                            value={booskaFormData.lootoNum }
+                            value={booskaFormData.lootoNum}
 
                           />
 
@@ -276,18 +304,18 @@ const DiiwaangalintaBooska = () => {
 
                         </FormGroup>
                       </Col>
-                     
+
                       <Col md="6">
-                        <FormGroup className="mb-3">
                           <Label htmlFor="validationCustom01">Yaa Laga IIBSHAY</Label>
+                        <FormGroup className="mb-3">
                           <Select
                             placeholder="Laga IIBSHAY"
                             name="whereComes"
                             id="validationCustom01"
                             options={whereComes}
                             classNamePrefix="select2-selection"
-                            onChange={value => setBooskaFormData((prev) => ({ ...prev, ["whereComes"]: value.value })) }
-                            value={whereComes?.find(vl => {return booskaFormData.whereComes == vl.value })}
+                            onChange={value => setBooskaFormData((prev) => ({ ...prev, ["whereComes"]: value.value }))}
+                            value={whereComes?.find(vl => { return booskaFormData.whereComes == vl.value })}
                             required
                           />
 
@@ -306,13 +334,13 @@ const DiiwaangalintaBooska = () => {
                             required
                             onChange={value => setBooskaFormData((prev) => ({ ...prev, ["witnesses"]: value.value }))}
                             // onBlur={validation.handleBlur}
-                            value={witness?.find(vl =>  booskaFormData.witnesses == vl.value )}
+                            value={witness?.find(vl => booskaFormData.witnesses == vl.value)}
 
                           />
 
                         </FormGroup>
                       </Col>
-                      
+
                       <Col md="12">
                         <FormGroup className="mb-2">
                           <Label htmlFor="validationCustom01">Yaa iska-leh</Label>

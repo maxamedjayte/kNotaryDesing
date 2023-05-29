@@ -106,20 +106,16 @@ const SidebarContent = props => {
 
             <li className="menu-title">{props.t("Apps")}</li>
             <li>
-              <Link to="/#" className="has-arrow ">
+              <Link to="/xogta-diiwaangalinta-macaamiisha" >
                 <i className="bx bxs-user-detail"></i>
-                <span>{props.t("Macaamiisha")}</span>
+                <span className="badge rounded-pill bg-info float-end">
+                  04
+                </span>
+                <span>{props.t("Xogta Macaamiisha")}</span>
               </Link>
-              <ul className="sub-menu">
-                <li>
-                  <Link to="/xogta-diiwaangalinta-macaamiisha">{props.t("Xogta Macaamiisha")}</Link>
-                </li>
-                <li>
-                  <Link to="/xogta-diiwaangalinta-macaamiisha">{props.t("Diiwaangalinta Macaamiisha")}</Link>
-                </li>
-               
-              </ul>
+            
             </li>
+           
             {/* <li>
               <Link to="/#" >
                 <i className="bx bx-calendar"></i>

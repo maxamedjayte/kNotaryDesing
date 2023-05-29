@@ -1,6 +1,6 @@
 import axios from "axios";
 
-axios.defaults.baseURL = "https://knotary.up.railway.app//";
+axios.defaults.baseURL = "https://knotary.up.railway.app/";
 export const httpFetcher = async (url) => {
     var data = await axios.get(url);
     return data.data;

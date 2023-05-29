@@ -33,6 +33,7 @@ import {
   Card,
   CardBody,
   Breadcrumb,
+  Spinner,
 } from "reactstrap";
 import DeleteModal from "components/Common/DeleteModal";
 import TableContainer from "components/Common/TableContainer";
@@ -47,6 +48,7 @@ function XogtaDiiwaangalintaMacamiisha() {
 
   const [modal, setModal] = useState(false);
   const [modal1, setModal1] = useState(false);
+  const [formIsLoading, setFormIsLoading]=useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [macaamiilFormData,setMacaamiilFormData] = useState();
 
@@ -111,6 +113,7 @@ function XogtaDiiwaangalintaMacamiisha() {
     }),
     onSubmit: async (values) => {
       let response;
+      setFormIsLoading(true);
       if (isEdit) {
         // const updateOrder = {
         //   id: values.id,
@@ -134,12 +137,13 @@ function XogtaDiiwaangalintaMacamiisha() {
         }
         // update macamiil
         response=await updateMacaamiilInfo(macaamiilFormData, values.id);
+        setFormIsLoading(false)
         // dispatch(onUpdateOrder(updateOrder));
         validation.resetForm();
       } else {
         
-        console.log(macaamiilFormData)
         response= await createMacaamiilInfo(macaamiilFormData)
+        setFormIsLoading(false)
         console.log(response)
         // dispatch(onAddNewOrder(newOrder));
         validation.resetForm();
@@ -223,8 +227,8 @@ function XogtaDiiwaangalintaMacamiisha() {
         }
       },
       {
-        Header: 'Da\'da',
-        accessor: 'dateOfBirth',
+        Header: 'Jinsiga',
+        accessor: 'gender',
         filterable: true,
         Cell: (cellProps) => {
           return cellProps.value ? cellProps.value : '';
@@ -243,7 +247,7 @@ function XogtaDiiwaangalintaMacamiisha() {
         accessor: 'dateTimeRegistred',
         filterable: true,
         Cell: (cellProps) => {
-          return cellProps.value ? cellProps.value : '';
+          return cellProps.value ? cellProps.value.split('T')[0] : '';
         }
       },
       {
@@ -495,12 +499,23 @@ function XogtaDiiwaangalintaMacamiisha() {
                     </div>
                     <div className="mb-3">
                     <div className="text-end">
-                      <button
+                      {formIsLoading?(
+                        <button
+                        type="submit"
+                        className="btn btn-success save-user"
+                      >
+                           <Spinner animation="border" variant="primary" />
+                      </button>
+                   
+                      ):(
+                        <button
                         type="submit"
                         className="btn btn-success save-user"
                       >
                         Save  c
                       </button>
+                      )}
+                      
                     </div>
                     </div>
                   </Col>

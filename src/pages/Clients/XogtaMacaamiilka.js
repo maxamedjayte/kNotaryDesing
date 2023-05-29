@@ -70,6 +70,13 @@ const XogtaMacaamiilka = props => {
   };
   const [modal, setModal] = useState(false);
   const [transactionForm, setTransactionForm] = useState({})
+  const toggle = () => {
+    if (modal) {
+      setModal(false);
+    } else {
+      setModal(true);
+    }
+  };
 
   const handleChange = ({ target }) => {
     const { name, value } = target;
@@ -86,12 +93,12 @@ const XogtaMacaamiilka = props => {
 
   async function registreTransactionSubmit(e) {
     e.preventDefault();
+    console.log(transactionForm)
     try {
 
       let response= await createTransactionForTheUser(transactionForm)
       location.reload()
     } catch (error) {
-      console.log("")
     }
     // });
   }
@@ -110,19 +117,22 @@ const XogtaMacaamiilka = props => {
   ]);
 
   useEffect(() => {
+    
     onGetUserProfile();
+    setTransactionForm((prev) => ({ ...prev, ['itReceives']: false }))
   }, [onGetUserProfile]);
 
   return (
     <React.Fragment>
-      <Modal size="md" isOpen={modal} >
-        <ModalHeader closeButton tag="h4">
+      <Modal size="md" isOpen={modal} toggle={toggle}>
+        <ModalHeader tag="h4" oggle={toggle}>
           
           {"Diiwaangali Dhaqdhaqaa"}
         </ModalHeader>
         <ModalBody>
           <Form onSubmit={registreTransactionSubmit}>
-            <Row form>
+            
+            <Row form="true">
               <Col col={6}>
                 <div className="mb-3">
 
@@ -143,8 +153,8 @@ const XogtaMacaamiilka = props => {
                     name="itReceives"
                     type="select"
                     className="form-select"
-                    value={transactionForm.itReceives==true?"LACAG DHIGID" :"QAADASHO"}
-                    onChange={e => setTransactionForm((prev) => ({ ...prev, ['itReceives']:  e.target.value =="QAADASHO"?false:true }))} 
+                    value={transactionForm? transactionForm.itReceives==true?"LACAG DHIGID" :"QAADASHO":"QAADASHO"}
+                    onChange={e => {console.log(transactionForm); return setTransactionForm((prev) => ({ ...prev, ['itReceives']:  e.target.value =="QAADASHO"?false:true }))} } 
                     
                   >
                     <option value="LACAG DHIGID" >LACAG DHIGID</option>
@@ -399,7 +409,7 @@ const XogtaMacaamiilka = props => {
                             {clientInfo.booskaWhoHas.length == 0 ? (
                               <tr>
 
-                                <center><h6>boos uma diiwaan gashna</h6> </center>
+                              <h6>boos uma diiwaan gashna</h6> 
                               </tr>
                             ) : (
                               clientInfo.booskaWhoHas.map((booska, index) => {
@@ -450,7 +460,6 @@ const XogtaMacaamiilka = props => {
                             </tr>
                           ) : (
                             clientInfo.userTransactions.map((transaction, index) => {
-                              console.log(transaction)
                               return <tr key={index}>
                                 <th scope="row">{transaction.id}</th>
                                 <td>{transaction.itReceives ? (<Badge style={{ 'backgroundColor': 'green' }} bg="success">DHIGTAY</Badge>) : (<Badge bg="success">QAATAY</Badge>)}</td>
