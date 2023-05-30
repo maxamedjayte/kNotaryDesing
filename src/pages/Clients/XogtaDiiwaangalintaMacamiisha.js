@@ -39,6 +39,7 @@ import DeleteModal from "components/Common/DeleteModal";
 import TableContainer from "components/Common/TableContainer";
 import { createMacaamiilInfo, httpFetcher, updateMacaamiilInfo } from "pages/services/fetchingData";
 import useSWR from 'swr';
+import { ShimmerTitle } from "react-shimmer-effects";
 
 function XogtaDiiwaangalintaMacamiisha() {
 
@@ -48,14 +49,16 @@ function XogtaDiiwaangalintaMacamiisha() {
 
   const [modal, setModal] = useState(false);
   const [modal1, setModal1] = useState(false);
-  const [formIsLoading, setFormIsLoading]=useState(false);
+  const [formIsLoading, setFormIsLoading] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
-  const [macaamiilFormData,setMacaamiilFormData] = useState();
+  const [macaamiilFormData, setMacaamiilFormData] = useState();
 
   const [macamiil, setMacaamiil] = useState(null);
   const FullName = (cell) => {
     return (
-      <Link to="#" >
+
+
+      <Link to={`/xogta-macaamiilka/${cell.row.original.id}/`} >
         <div className="d-flex">
 
           <div className="align-self-center me-3">
@@ -136,19 +139,19 @@ function XogtaDiiwaangalintaMacamiisha() {
           }
         }
         // update macamiil
-        response=await updateMacaamiilInfo(macaamiilFormData, values.id);
+        response = await updateMacaamiilInfo(macaamiilFormData, values.id);
         setFormIsLoading(false)
         // dispatch(onUpdateOrder(updateOrder));
         validation.resetForm();
       } else {
-        
-        response= await createMacaamiilInfo(macaamiilFormData)
+
+        response = await createMacaamiilInfo(macaamiilFormData)
         setFormIsLoading(false)
         console.log(response)
         // dispatch(onAddNewOrder(newOrder));
         validation.resetForm();
       }
-      
+
       toggle();
     },
   });
@@ -224,7 +227,8 @@ function XogtaDiiwaangalintaMacamiisha() {
         accessor: 'name',
         filterable: true,
         Cell: (cellProps) => {
-          return <FullName {...cellProps} />
+          return  <FullName {...cellProps} />
+           
         }
       },
       {
@@ -270,7 +274,7 @@ function XogtaDiiwaangalintaMacamiisha() {
               <Link
                 to={`/xogta-macaamiilka/${cellProps.row.original.id}/`}
                 className="text-info"
-                
+
               >
                 <i className="mdi mdi-eye font-size-18" id="edittooltip" />
                 <UncontrolledTooltip placement="top" target="edittooltip">
@@ -334,7 +338,7 @@ function XogtaDiiwaangalintaMacamiisha() {
                     handleMacaamiilCreateClicks={handleMacaamiilCreateClicks}
                     customPageSize={10}
                     className="custom-header-css"
-                  />) : null}
+                  />) : <ShimmerTitle line={6} gap={10} variant="primary" />}
 
                 </CardBody>
               </Card>
@@ -345,7 +349,7 @@ function XogtaDiiwaangalintaMacamiisha() {
               {!!isEdit ? "Wax-ka badal macaamiil" : "Diiwaangali Macaamiil"}
             </ModalHeader>
             <ModalBody>
-              <Form 
+              <Form
                 onSubmit={(e) => {
                   e.preventDefault();
                   setMacaamiilFormData(new FormData(e.target))
@@ -354,12 +358,12 @@ function XogtaDiiwaangalintaMacamiisha() {
                 }}
               >
                 <Row form>
-                <Input
+                  <Input
                     name="id"
                     hidden={true}
                     onChange={validation.handleChange}
                     value={validation.values.id || ""}
-                    
+
                   />
                   <Col className="col-6">
                     <div className="mb-2">
@@ -370,9 +374,9 @@ function XogtaDiiwaangalintaMacamiisha() {
                         onChange={validation.handleChange}
                         onBlur={validation.handleBlur}
                         value={validation.values.image || ""}
-                       
+
                       />
-                      
+
                     </div>
                     <div className="mb-2">
                       <Label className="form-label">Full-Name</Label>
@@ -466,7 +470,7 @@ function XogtaDiiwaangalintaMacamiisha() {
                         <FormFeedback type="invalid">{validation.errors.balance}</FormFeedback>
                       ) : null}
                     </div>
-                        
+
                     <div className="mb-3">
                       <Label className="form-label">Jinsiga Shaqsiga</Label>
                       <Input
@@ -499,29 +503,29 @@ function XogtaDiiwaangalintaMacamiisha() {
                       </Input>
                     </div>
                     <div className="mb-3">
-                    <div className="text-end">
-                      {formIsLoading?(
-                        <button
-                        type="submit"
-                        className="btn btn-success save-user"
-                      >
-                           <Spinner animation="border" variant="primary" />
-                      </button>
-                   
-                      ):(
-                        <button
-                        type="submit"
-                        className="btn btn-success save-user"
-                      >
-                        Save  c
-                      </button>
-                      )}
-                      
-                    </div>
+                      <div className="text-end">
+                        {formIsLoading ? (
+                          <button
+                            type="submit"
+                            className="btn btn-success save-user"
+                          >
+                            <Spinner animation="border" variant="primary" />
+                          </button>
+
+                        ) : (
+                          <button
+                            type="submit"
+                            className="btn btn-success save-user"
+                          >
+                            Save  c
+                          </button>
+                        )}
+
+                      </div>
                     </div>
                   </Col>
                 </Row>
-                
+
               </Form>
             </ModalBody>
           </Modal>

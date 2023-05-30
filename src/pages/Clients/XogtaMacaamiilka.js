@@ -93,7 +93,6 @@ const XogtaMacaamiilka = props => {
 
   async function registreTransactionSubmit(e) {
     e.preventDefault();
-    console.log(transactionForm)
     try {
 
       let response= await createTransactionForTheUser(transactionForm)
@@ -124,8 +123,8 @@ const XogtaMacaamiilka = props => {
 
   return (
     <React.Fragment>
-      <Modal size="md" isOpen={modal} toggle={toggle}>
-        <ModalHeader tag="h4" oggle={toggle}>
+      <Modal size="lg" isOpen={modal} toggle={toggle}>
+        <ModalHeader tag="h5" oggle={toggle}>
           
           {"Diiwaangali Dhaqdhaqaa"}
         </ModalHeader>
@@ -169,10 +168,22 @@ const XogtaMacaamiilka = props => {
                     className="form-control"
                     value={transactionForm.dateTimeTransaction}
                     onChange={handleChange}
-
                   >
 
                   </Input>
+                </div>
+                <div className="mb-3">
+
+                  <Label className="form-label">Other Charges</Label>
+                  <Input
+                    name="otherChargesMoney"
+                    type="number"
+                    placeholder="Other Charges Money"
+                    required
+                    onChange={handleChange}
+                    value={transactionForm.otherChargesMoney}
+                  />
+
                 </div>
                 <div className="mb-3">
                   <Label htmlFor="validationCustom05">Faahfaahin</Label>
@@ -236,7 +247,7 @@ const XogtaMacaamiilka = props => {
                   </div>
                   <CardBody className="pt-0">
                     <Row>
-                      <Col sm="4">
+                      <Col sm="6">
                         <div className="avatar-md profile-user-wid mb-2">
                           <img
                             src={`https://knotary.up.railway.app/${clientInfo.image}`}
@@ -253,20 +264,16 @@ const XogtaMacaamiilka = props => {
                         </p>
                       </Col>
 
-                      <Col sm={8}>
+                      <Col sm={6}>
                         <div className="pt-4">
                           <Row>
                             <Col xs="6">
-                              <h5 className="font-size-15">
-                                {userProfile.projectCount}
-                              </h5>
-                              <p className="text-muted mb-0">Projects</p>
                             </Col>
                             <Col xs="6">
                               <h5 className="font-size-15">
-                                ${userProfile.revenue}
+                                ${clientInfo.balance}
                               </h5>
-                              <p className="text-muted mb-0">Revenue</p>
+                              <p className="text-muted mb-0">Haraa</p>
                             </Col>
                           </Row>
                           {/* <div className="mt-4">
@@ -284,9 +291,6 @@ const XogtaMacaamiilka = props => {
                 <Card>
                   <CardBody>
                     <CardTitle className="mb-4">Xogta Shaqsigan</CardTitle>
-                    <p className="text-muted mb-4">
-                      {userProfile.personalDetail}
-                    </p>
                     <div className="table-responsive">
                       <Table className="table-nowrap mb-0">
                         <tbody>
@@ -312,61 +316,7 @@ const XogtaMacaamiilka = props => {
                   </CardBody>
                 </Card>
 
-                <Card>
-                  <CardBody>
-                    <CardTitle className="mb-5">Marqaati Qabasho</CardTitle>
-                    <div >
-                      <ul className="verti-timeline list-unstyled">
-                        {map(userProfile.experiences, (experience, i) => (
-                          <li
-                            className={
-                              experience.id === 1
-                                ? "event-list active"
-                                : "event-list"
-                            }
-                            key={"_exp_" + i}
-                          >
-                            <div className="event-timeline-dot">
-                              <i
-                                className={
-                                  experience.id === 1
-                                    ? "bx bx-right-arrow-circle bx-fade-right"
-                                    : "bx bx-right-arrow-circle"
-                                }
-                              />
-                            </div>
-                            <div className="d-flex">
-                              <div className="me-3">
-                                <i
-                                  className={
-                                    "bx " +
-                                    experience.iconClass +
-                                    " h4 text-primary"
-                                  }
-                                />
-                              </div>
-                              <div className="flex-grow-1">
-                                <div>
-                                  <h5 className="font-size-15">
-                                    <Link
-                                      to={experience.link}
-                                      className="text-dark"
-                                    >
-                                      {experience.designation}
-                                    </Link>
-                                  </h5>
-                                  <span className="text-primary">
-                                    {experience.timeDuration}
-                                  </span>
-                                </div>
-                              </div>
-                            </div>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </CardBody>
-                </Card>
+         
               </Col>
 
               <Col xl="8">
@@ -430,12 +380,41 @@ const XogtaMacaamiilka = props => {
                     </div>
                   </CardBody>
                 </Card>
-                <br></br>
-                <Card>
+              
+              </Col>
+            </Row>
+          )}
+          
+        </Container>
+        {!clientInfo && !error ? (
+            <Fragment>
+            </Fragment>
+          ) : (<div>
+        <Row>
+                  <MiniCards
+                    title=' '
+                    text=""
+                    key={"_card_" + 1}
+                  />
+                   <MiniCards
+                    title=' '
+                    text=""
+                    key={"_card_" + 1}
+                  />
+                  <MiniCards
+                    title='Haraaga Lacagta'
+                    text={<strong>${clientInfo.balance}</strong>}
+                    iconClass="bx-hourglass"
+                    key={"_card_" + 2}
+                  />
+                </Row>
+        <Row>
+          <Col md="6" >
+          <Card>
                   <CardBody>
                     <div className="mb-2 d-flex justify-content-between">
 
-                      <CardTitle className="mb-3">Dhaqdhaqaaqa Lacageed</CardTitle>
+                      <CardTitle className="mb-3">Lacagaha La-Dhigtay</CardTitle>
                       <Button size="sm" type="success" onClick={() => {
                         setModal(true)
                       }}> Dhaqdahqaaq Cusub</Button>
@@ -456,13 +435,13 @@ const XogtaMacaamiilka = props => {
                           {clientInfo.userTransactions.length == 0 ? (
                             <tr>
 
-                              <center><h6>boos uma diiwaan gashna</h6> </center>
+                              <center><h6>lacag dhigasho majirto uma diiwaan gashna</h6> </center>
                             </tr>
                           ) : (
-                            clientInfo.userTransactions.map((transaction, index) => {
+                            clientInfo.userTransactions.filter((transaction) => transaction.itReceives  === true).map((transaction, index) => {
                               return <tr key={index}>
                                 <th scope="row">{transaction.id}</th>
-                                <td>{transaction.itReceives ? (<Badge style={{ 'backgroundColor': 'green' }} bg="success">DHIGTAY</Badge>) : (<Badge bg="success">QAATAY</Badge>)}</td>
+                                <td><Badge style={{ 'backgroundColor': 'green' }} bg="success">DHIGTAY</Badge></td>
                                 <td><span style={{ 'fontSize': '13px' }} >$</span><strong>{transaction.money}</strong> </td>
                                 
                                 <td>{transaction.description.substring(0,70)}</td>
@@ -476,11 +455,56 @@ const XogtaMacaamiilka = props => {
                     </div>
                   </CardBody>
                 </Card>
-              </Col>
-            </Row>
-          )}
+          </Col>
+          <Col md="6" >
+          <Card>
+                  <CardBody>
+                    <div className="mb-2 d-flex justify-content-between">
 
-        </Container>
+                      <CardTitle className="mb-3">Lacagaha La-Qaatay</CardTitle>
+                      <Button size="sm" type="success" onClick={() => {
+                        setModal(true)
+                      }}> Dhaqdahqaaq Cusub</Button>
+                    </div>
+                    <div className="table-responsive">
+                      <Table className="table mb-0">
+                        <thead className="table-dark">
+                          <tr>
+                            <th>#</th>
+                            <th>NoocaDhaqdha</th>
+                            <th>Lacagta</th>
+                            <th>Faahfaahin</th>
+                            <th>Waqtiga-La</th>
+                            <th>Action</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {clientInfo.userTransactions.length == 0 ? (
+                            <tr>
+
+                              <center><h6>lacag dhigasho majirto uma diiwaan gashna</h6> </center>
+                            </tr>
+                          ) : (
+                            clientInfo.userTransactions.filter((transaction) => transaction.itReceives  === false).map((transaction, index) => {
+                              return <tr key={index}>
+                                <th scope="row">{transaction.id}</th>
+                                <td><Badge style={{ 'backgroundColor': 'red' }} bg="danger">QAATAY</Badge></td>
+                                <td><span style={{ 'fontSize': '13px' }} >$</span><strong>{transaction.money}</strong> </td>
+                                
+                                <td>{transaction.description.substring(0,70)}</td>
+                                <td>{transaction.dateTimeTransaction.split('T')[0]}  {transaction.dateTimeTransaction.split('T')[1].split('Z')[0]}</td>
+                              </tr>
+                            })
+                          )}
+
+                        </tbody>
+                      </Table>
+                    </div>
+                  </CardBody>
+                </Card>
+          </Col>
+        </Row>
+        </div>)}
       </div>
     </React.Fragment>
   );
